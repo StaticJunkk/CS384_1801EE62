@@ -1,5 +1,6 @@
 # Function to add two numbers
 def add(num1, num2):
+
     addition = num1 + num2
     return addition
 
@@ -21,5 +22,7 @@ def multiply(num1, num2):
 
 
 def divide(num1, num2):
+    if(num2 == 0):
+        return 0
     division = num1/num2
     return division
