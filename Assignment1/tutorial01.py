@@ -6,7 +6,7 @@ def add(num1, num2):
         addition = num1 + num2
         return addition
     except ValueError:
-        raise ValueError('Works only with numbers')
+        return 0
 
 
 # Function to subtract two numbers
@@ -19,7 +19,7 @@ def subtract(num1, num2):
         subtraction = num1 - num2
         return subtraction
     except ValueError:
-        raise ValueError('Works only with numbers')
+        return 0
 # Function to multiply two numbers
 
 
@@ -30,7 +30,7 @@ def multiply(num1, num2):
         multiplication = num1*num2
         return multiplication
     except ValueError:
-        raise ValueError('Works only with numbers')
+        return 0
 # Function to divide two numbers
 
 
@@ -43,7 +43,7 @@ def divide(num1, num2):
         division = num1/num2
         return division
     except ValueError:
-        raise ValueError('Works only with numbers')
+        return 0
 
 
 # Function to add power function
@@ -69,7 +69,7 @@ def power(num1, num2):  # num1 ^ num2
                 return num1
 
     except ValueError:
-        raise ValueError('Works only with numbers')
+        return 0
 
 
 # Python 3 program to print GP.  geometric Progression
@@ -92,7 +92,7 @@ def printGP(a, r, n):
                 gp.append(a)
             return gp
     except ValueError:
-        raise ValueError('Works only with numbers')
+        return 0
 
 
 # Python 3 program to print AP.  arithmetic Progression
@@ -115,7 +115,7 @@ def printAP(a, d, n):
                 ap.append(a)
             return ap
     except ValueError:
-        raise ValueError('Works only with numbers')
+        return 0
 
 # Python 3 program to print HP.   Harmonic Progression
 # You cant use the inbuilt python function. Write your own function
@@ -137,4 +137,4 @@ def printHP(a, d, n):
                 hp.append(1/a)
             return hp
     except ValueError:
-        raise ValueError('Works only with numbers')
+        return 0
