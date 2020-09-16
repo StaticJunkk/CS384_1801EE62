@@ -1,3 +1,5 @@
+
+
 # Function to add two numbers
 def add(num1, num2):
     try:
@@ -131,10 +133,12 @@ def printHP(a, d, n):
         if n <= 0:
             return 0
         else:
-            hp.append(1/a)
+            x = round(1/a, 3)
+            hp.append(x)
             for i in range(1, n):
                 a += d
-                hp.append(1/a)
+                x = round(1/a, 3)
+                hp.append(x)
             return hp
     except ValueError:
         return 0
