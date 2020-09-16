@@ -101,7 +101,21 @@ def printGP(a, r, n):
 
 def printAP(a, d, n):
     ap = []
-    return ap
+    try:
+        a = int(a)
+        d = float(d)
+        n = int(n)
+
+        if n <= 0:
+            return 0
+        else:
+            ap.append(a)
+            for i in range(1, n):
+                a += d
+                ap.append(a)
+            return ap
+    except ValueError:
+        raise ValueError('Works only with numbers')
 
 # Python 3 program to print HP.   Harmonic Progression
 # You cant use the inbuilt python function. Write your own function
