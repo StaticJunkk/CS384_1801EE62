@@ -1,8 +1,8 @@
 # Function to add two numbers
 def add(num1, num2):
     try:
-        num1 = int(num1)
-        num2 = int(num2)
+        num1 = float(num1)
+        num2 = float(num2)
         addition = num1 + num2
         return addition
     except ValueError:
@@ -14,8 +14,8 @@ def add(num1, num2):
 
 def subtract(num1, num2):
     try:
-        num1 = int(num1)
-        num2 = int(num2)
+        num1 = float(num1)
+        num2 = float(num2)
         subtraction = num1 - num2
         return subtraction
     except ValueError:
@@ -25,8 +25,8 @@ def subtract(num1, num2):
 
 def multiply(num1, num2):
     try:
-        num1 = int(num1)
-        num2 = int(num2)
+        num1 = float(num1)
+        num2 = float(num2)
         multiplication = num1*num2
         return multiplication
     except ValueError:
@@ -38,8 +38,8 @@ def divide(num1, num2):
     if(num2 == 0):
         return 0
     try:
-        num1 = int(num1)
-        num2 = int(num2)
+        num1 = float(num1)
+        num2 = float(num2)
         division = num1/num2
         return division
     except ValueError:
@@ -50,7 +50,7 @@ def divide(num1, num2):
 # You cant use the inbuilt python function x ** y . Write your own function
 def power(num1, num2):  # num1 ^ num2
     try:
-        num1 = int(num1)
+        num1 = float(num1)
         num2 = int(num2)
         if(num2 == 0):
             return 1
