@@ -1,6 +1,7 @@
 import tutorial01 as A1
 
-actual_answers = [9, 12, 80, 5, 16, [2, 6, 18, 54], [2, 5, 8, 11]]
+actual_answers = [9, 12, 80, 5, 16, [2, 6, 18, 54],
+                  [2, 5, 8, 11], [0.5, 0.2, 0.125, ]]
 student_answers = []
 
 test_case_1 = A1.add(4, 5)
@@ -23,6 +24,9 @@ student_answers.append(test_case_6)
 
 test_case_7 = A1.printAP(2, 3, 4)
 student_answers.append(test_case_7)
+
+test_case_8 = A1.printHP(2, 3, 3)
+student_answers.append(test_case_8)
 
 
 print(actual_answers)

@@ -79,7 +79,7 @@ def power(num1, num2):  # num1 ^ num2
 def printGP(a, r, n):
     gp = []
     try:
-        a = int(a)
+        a = float(a)
         r = float(r)
         n = int(n)
 
@@ -102,7 +102,7 @@ def printGP(a, r, n):
 def printAP(a, d, n):
     ap = []
     try:
-        a = int(a)
+        a = float(a)
         d = float(d)
         n = int(n)
 
@@ -123,4 +123,18 @@ def printAP(a, d, n):
 
 def printHP(a, d, n):
     hp = []
-    return hp
+    try:
+        a = float(a)
+        d = float(d)
+        n = int(n)
+
+        if n <= 0:
+            return 0
+        else:
+            hp.append(1/a)
+            for i in range(1, n):
+                a += d
+                hp.append(1/a)
+            return hp
+    except ValueError:
+        raise ValueError('Works only with numbers')
