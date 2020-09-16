@@ -49,7 +49,27 @@ def divide(num1, num2):
 # Function to add power function
 # You cant use the inbuilt python function x ** y . Write your own function
 def power(num1, num2):  # num1 ^ num2
-    # DivisionLogic
+    try:
+        num1 = int(num1)
+        num2 = int(num2)
+        if(num2 == 0):
+            return 1
+        elif(num2 == 1):
+            return num1
+        else:
+            x = num1
+            if num2 > 0:
+                for i in range(1, num2):
+                    num1 *= x
+                return num1
+            elif num2 < 0:
+                num1 = 1
+                for i in range(abs(num2)):
+                    num1 /= x
+                return num1
+
+    except ValueError:
+        raise ValueError('Works only with numbers')
     return power
 
 # Python 3 program to print GP.  geometric Progression
