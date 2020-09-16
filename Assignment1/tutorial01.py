@@ -70,7 +70,7 @@ def power(num1, num2):  # num1 ^ num2
 
     except ValueError:
         raise ValueError('Works only with numbers')
-    return power
+
 
 # Python 3 program to print GP.  geometric Progression
 # You cant use the inbuilt python function. Write your own function
@@ -78,7 +78,22 @@ def power(num1, num2):  # num1 ^ num2
 
 def printGP(a, r, n):
     gp = []
-    return gp
+    try:
+        a = int(a)
+        r = float(r)
+        n = int(n)
+
+        if n <= 0:
+            return 0
+        else:
+            gp.append(a)
+            for i in range(1, n):
+                a *= r
+                gp.append(a)
+            return gp
+    except ValueError:
+        raise ValueError('Works only with numbers')
+
 
 # Python 3 program to print AP.  arithmetic Progression
 # You cant use the inbuilt python function. Write your own function
