@@ -65,6 +65,8 @@ def power(num1, num2):  # num1 ^ num2
                     num1 *= x
                 return num1
             elif num2 < 0:
+                if x == 0:
+                    return 0
                 num1 = 1
                 for i in range(abs(num2)):
                     num1 /= x
@@ -129,7 +131,8 @@ def printHP(a, d, n):
         a = float(a)
         d = float(d)
         n = int(n)
-
+        if a is 0:
+            return 0
         if n <= 0:
             return 0
         else:
@@ -137,6 +140,8 @@ def printHP(a, d, n):
             hp.append(x)
             for i in range(1, n):
                 a += d
+                if a == 0:
+                    return 0
                 x = round(1/a, 3)
                 hp.append(x)
             return hp
