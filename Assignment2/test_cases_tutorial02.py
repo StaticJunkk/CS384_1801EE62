@@ -7,7 +7,7 @@ actual_answers = [0.558, 0.641, 0.302, 0.091, -
                   0.389, -1.003, 0.475, 0.226, 0.404, -1.108, 0.051]
 student_answers = []
 
-x, y = np.loadtxt(r"results.csv", delimiter=r",",
+x, y = np.loadtxt("results.csv", delimiter=",",
                   usecols=(0, 1), unpack=True, skiprows=1)
 x = list(x)
 y = list(y)
@@ -15,8 +15,8 @@ y = list(y)
 test_case_1 = A2.mean(x)
 student_answers.append(test_case_1)
 
-# test_case_2 = A2.median(x)
-# student_answers.append(test_case_2)
+test_case_2 = A2.median(x)
+student_answers.append(test_case_2)
 
 # test_case_3 = A2.standard_deviation(x)
 # student_answers.append(test_case_3)

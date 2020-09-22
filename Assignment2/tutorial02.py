@@ -1,5 +1,21 @@
 # All decimal 3 places
 
+# Function to sort the list
+def sorting(first_list):
+    n = len(first_list)
+    for i in range(0, n):
+        for j in range(0, n-1):
+            try:
+                first_list[j] = float(first_list[j])
+                first_list[j+1] = float(first_list[j+1])
+                if first_list[j] > first_list[j+1]:
+                    temp = first_list[j]
+                    first_list[j] = first_list[j+1]
+                    first_list[j+1] = temp
+            except ValueError:
+                return 0
+    return first_list
+
 
 # Function to compute sum. You cant use Python functions
 def summation(first_list):
@@ -10,7 +26,6 @@ def summation(first_list):
             summation_value += i
         except ValueError:
             return 0
-    summation_value = round(summation_value, 3)
     return summation_value
 
 # Function to compute mean
@@ -23,13 +38,25 @@ def mean(first_list):
     mean_value = round(sum_value/total_elements, 3)
     return mean_value
 
+
 # Function to compute median. You cant use Python functions
 
-# def median(first_list):
-#     # median Logic
-#     # return median_value
 
-#     # Function to compute Standard deviation. You cant use Python functions
+def median(first_list):
+
+    first_list = sorting(first_list)
+
+    n = len(first_list)
+    if n % 2 == 0:
+        j = int(n/2)
+        median_value = (first_list[j]+first_list[j-1])/2
+
+    else:
+        j = int(n/2)
+        median_value = first_list[j]
+    return round(median_value, 3)
+
+# Function to compute Standard deviation. You cant use Python functions
 
 
 # def standard_deviation(first_list):
@@ -86,17 +113,11 @@ def mean(first_list):
 #     # return skewness_value
 
 
-# def sorting(first_list):
-#     # Sorting Logic
-#     # return sorted_list
-
-#     # Function to compute Kurtosis. You cant use Python functions
-
-
+# Function to compute Kurtosis. You cant use Python functions
 # def kurtosis(first_list):
 #     # Kurtosis Logic
 #     # return kurtosis_value
 
 
-x = [1, 2, 3, 4]
-print(mean(x))
+# x = [1, 2, 3, 4, 5]
+# print(median(x))

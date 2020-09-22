@@ -1,4 +1,2 @@
-x, y = np.loadtxt(r"results.csv", delimiter=r",",
-#                   usecols=(0, 1), unpack=True, skiprows=1)
-# x = list(x)
-# y = list(y)
+[0.558, 0.641, 0.302, 0.091, -
+                  0.389, -1.003, 0.475, 0.226, 0.404, -1.108, 0.051]
