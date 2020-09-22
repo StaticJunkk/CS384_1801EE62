@@ -17,80 +17,86 @@ def summation(first_list):
 
 
 def mean(first_list):
-    # mean Logic
-    # return mean_value
 
-    # Function to compute median. You cant use Python functions
+    sum_value = summation(first_list)
+    total_elements = len(first_list)
+    mean_value = round(sum_value/total_elements, 3)
+    return mean_value
 
+# Function to compute median. You cant use Python functions
 
-def median(first_list):
-    # median Logic
-    # return median_value
+# def median(first_list):
+#     # median Logic
+#     # return median_value
 
-    # Function to compute Standard deviation. You cant use Python functions
-
-
-def standard_deviation(first_list):
-    # Standard deviation Logic
-    # return standard_deviation_value
-
-    # Function to compute variance. You cant use Python functions
+#     # Function to compute Standard deviation. You cant use Python functions
 
 
-def variance(first_list):
-    # variance Logic
-    # return variance_value
+# def standard_deviation(first_list):
+#     # Standard deviation Logic
+#     # return standard_deviation_value
 
-    # Function to compute RMSE. You cant use Python functions
-
-
-def rmse(first_list, second_list):
-    # RMSE Logic
-    # return rmse_value
-
-    # Function to compute mse. You cant use Python functions
+#     # Function to compute variance. You cant use Python functions
 
 
-def mse(first_list, second_list):
-    # mse Logic
-    # return mse_value
+# def variance(first_list):
+#     # variance Logic
+#     # return variance_value
 
-    # Function to compute mae. You cant use Python functions
-
-
-def mae(first_list, second_list):
-    # mae Logic
-    # return mae_value
-
-    # Function to compute NSE. You cant use Python functions
+#     # Function to compute RMSE. You cant use Python functions
 
 
-def nse(first_list, second_list):
-    # nse Logic
-    # return nse_value
+# def rmse(first_list, second_list):
+#     # RMSE Logic
+#     # return rmse_value
 
-    # Function to compute Pearson correlation coefficient. You cant use Python functions
-
-
-def pcc(first_list, second_list):
-    # nse Logic
-    # return pcc_value
-
-    # Function to compute Skewness. You cant use Python functions
+#     # Function to compute mse. You cant use Python functions
 
 
-def skewness(first_list):
-    # Skewness Logic
-    # return skewness_value
+# def mse(first_list, second_list):
+#     # mse Logic
+#     # return mse_value
+
+#     # Function to compute mae. You cant use Python functions
 
 
-def sorting(first_list):
-    # Sorting Logic
-    # return sorted_list
+# def mae(first_list, second_list):
+#     # mae Logic
+#     # return mae_value
 
-    # Function to compute Kurtosis. You cant use Python functions
+#     # Function to compute NSE. You cant use Python functions
 
 
-def kurtosis(first_list):
-    # Kurtosis Logic
-    # return kurtosis_value
+# def nse(first_list, second_list):
+#     # nse Logic
+#     # return nse_value
+
+#     # Function to compute Pearson correlation coefficient. You cant use Python functions
+
+
+# def pcc(first_list, second_list):
+#     # nse Logic
+#     # return pcc_value
+
+#     # Function to compute Skewness. You cant use Python functions
+
+
+# def skewness(first_list):
+#     # Skewness Logic
+#     # return skewness_value
+
+
+# def sorting(first_list):
+#     # Sorting Logic
+#     # return sorted_list
+
+#     # Function to compute Kurtosis. You cant use Python functions
+
+
+# def kurtosis(first_list):
+#     # Kurtosis Logic
+#     # return kurtosis_value
+
+
+x = [1, 2, 3, 4]
+print(mean(x))
