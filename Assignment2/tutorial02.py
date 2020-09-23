@@ -1,6 +1,8 @@
 # All decimal 3 places
 
 # Function to sort the list
+
+
 def sorting(first_list):
     n = len(first_list)
     for i in range(0, n):
@@ -58,9 +60,10 @@ def median(first_list):
 
 
 def variance(first_list):
-    mean_value = mean(first_list)
-    variance_value = 0
     n = len(first_list)
+    mean_value = summation(first_list)
+    mean_value /= n
+    variance_value = 0
     for i in range(0, n):
         try:
             first_list[i] = float(first_list[i])
