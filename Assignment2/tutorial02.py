@@ -40,8 +40,6 @@ def mean(first_list):
 
 
 # Function to compute median. You cant use Python functions
-
-
 def median(first_list):
 
     first_list = sorting(first_list)
@@ -56,23 +54,31 @@ def median(first_list):
         median_value = first_list[j]
     return round(median_value, 3)
 
+# Function to compute variance. You cant use Python functions
+
+
+def variance(first_list):
+    mean_value = mean(first_list)
+    variance_value = 0
+    n = len(first_list)
+    for i in range(0, n):
+        try:
+            first_list[i] = float(first_list[i])
+            variance_value += (mean_value -
+                               first_list[i])*(mean_value-first_list[i])
+        except ValueError:
+            return 0
+    variance_value /= n
+    return round(variance_value, 3)
+
+
 # Function to compute Standard deviation. You cant use Python functions
-
-
 # def standard_deviation(first_list):
 #     # Standard deviation Logic
 #     # return standard_deviation_value
 
-#     # Function to compute variance. You cant use Python functions
 
-
-# def variance(first_list):
-#     # variance Logic
-#     # return variance_value
-
-#     # Function to compute RMSE. You cant use Python functions
-
-
+# Function to compute RMSE. You cant use Python functions
 # def rmse(first_list, second_list):
 #     # RMSE Logic
 #     # return rmse_value
@@ -119,5 +125,5 @@ def median(first_list):
 #     # return kurtosis_value
 
 
-# x = [1, 2, 3, 4, 5]
-# print(median(x))
+# x = [1, 2, 3, 'yay', 5]
+# print(variance(x))
