@@ -168,10 +168,15 @@ def nse(first_list, second_list):
         mean_value = summation(first_list)
         mean_value /= n
         for i in range(0, n):
-            numerator_list.append(
-                (first_list[i]-second_list[i])*(first_list[i]-second_list[i]))
-            denominator_list.append(
-                (mean_value-first_list[i])*(mean_value-first_list[i]))
+            try:
+                first_list[i] = float(first_list[i])
+                second_list[i] = float(second_list[i])
+                numerator_list.append(
+                    (first_list[i]-second_list[i])*(first_list[i]-second_list[i]))
+                denominator_list.append(
+                    (mean_value-first_list[i])*(mean_value-first_list[i]))
+            except ValueError:
+                return 0
         numerator_value = summation(numerator_list)
         denominator_value = summation(denominator_list)
         nse_value = 1 - numerator_value/denominator_value
@@ -192,12 +197,17 @@ def pcc(first_list, second_list):
         second_mean_value = summation(second_list)
         second_mean_value /= n
         for i in range(0, n):
-            numerator_list.append(
-                (first_mean_value-first_list[i])*(second_mean_value-second_list[i]))
-            denominator_list_1.append(
-                (first_mean_value-first_list[i])*(first_mean_value-first_list[i]))
-            denominator_list_2.append(
-                (second_mean_value-second_list[i])*(second_mean_value-second_list[i]))
+            try:
+                first_list[i] = float(first_list[i])
+                second_list[i] = float(second_list[i])
+                numerator_list.append(
+                    (first_mean_value-first_list[i])*(second_mean_value-second_list[i]))
+                denominator_list_1.append(
+                    (first_mean_value-first_list[i])*(first_mean_value-first_list[i]))
+                denominator_list_2.append(
+                    (second_mean_value-second_list[i])*(second_mean_value-second_list[i]))
+            except ValueError:
+                return 0
         numerator_value = summation(numerator_list)
         denominator_value = math.sqrt(
             summation(denominator_list_1)*summation(denominator_list_2))
@@ -207,10 +217,23 @@ def pcc(first_list, second_list):
         return 0
 
 
-#     # Function to compute Skewness. You cant use Python functions
-# def skewness(first_list):
-#     # Skewness Logic
-#     # return skewness_value
+# Function to compute Skewness. You cant use Python functions
+def skewness(first_list):
+    skewness_list = []
+    n = len(first_list)
+    mean_value = summation(first_list)
+    mean_value /= n
+    standard_deviation_value = standard_deviation(first_list)
+    for i in range(0, n):
+        try:
+            first_list[i] = float(first_list[i])
+            x = (first_list[i]-mean_value)/standard_deviation_value
+            skewness_list.append(x*x*x)
+        except ValueError:
+            return 0
+    skewness_value = summation(skewness_list)
+    skewness_value /= n
+    return round(skewness_value, 3)
 
 
 # Function to compute Kurtosis. You cant use Python functions
