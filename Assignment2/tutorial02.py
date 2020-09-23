@@ -159,16 +159,28 @@ def mae(first_list, second_list):
         return 0
 
 
-#     # Function to compute NSE. You cant use Python functions
+# Function to compute NSE. You cant use Python functions
+def nse(first_list, second_list):
+    if len(first_list) == len(second_list):
+        numerator_list = []
+        denominator_list = []
+        n = len(first_list)
+        mean_value = summation(first_list)
+        mean_value /= n
+        for i in range(0, n):
+            numerator_list.append(
+                (first_list[i]-second_list[i])*(first_list[i]-second_list[i]))
+            denominator_list.append(
+                (mean_value-first_list[i])*(mean_value-first_list[i]))
+        numerator_value = summation(numerator_list)
+        denominator_value = summation(denominator_list)
+        nse_value = 1 - numerator_value/denominator_value
+        return round(nse_value, 3)
+    else:
+        return 0
 
 
-# def nse(first_list, second_list):
-#     # nse Logic
-#     # return nse_value
-
-#     # Function to compute Pearson correlation coefficient. You cant use Python functions
-
-
+# Function to compute Pearson correlation coefficient. You cant use Python functions
 # def pcc(first_list, second_list):
 #     # nse Logic
 #     # return pcc_value
