@@ -1,6 +1,7 @@
 # All decimal 3 places
 
 # Function to sort the list
+import math
 
 
 def sorting(first_list):
@@ -76,9 +77,21 @@ def variance(first_list):
 
 
 # Function to compute Standard deviation. You cant use Python functions
-# def standard_deviation(first_list):
-#     # Standard deviation Logic
-#     # return standard_deviation_value
+def standard_deviation(first_list):
+    n = len(first_list)
+    mean_value = summation(first_list)
+    mean_value /= n
+    standard_deviation_value = 0
+    for i in range(0, n):
+        try:
+            first_list[i] = float(first_list[i])
+            standard_deviation_value += (mean_value -
+                                         first_list[i])*(mean_value-first_list[i])
+        except ValueError:
+            return 0
+    standard_deviation_value /= n
+    standard_deviation_value = math.sqrt(standard_deviation_value)
+    return round(standard_deviation_value, 3)
 
 
 # Function to compute RMSE. You cant use Python functions
