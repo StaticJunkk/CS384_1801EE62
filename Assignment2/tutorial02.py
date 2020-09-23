@@ -119,23 +119,23 @@ def rmse(first_list, second_list):
 
 
 # Function to compute mse. You cant use Python functions
-# def mse(first_list, second_list):
-#     if len(first_list) == len(second_list):
-#         n = len(first_list)
-#         mse_list = []
-#         for i in range(0, n):
-#             try:
-#                 first_list[i] = float(first_list[i])
-#                 second_list[i] = float(second_list[i])
-#                 x = first_list[i]-second_list[i]
-#                 mse_list.append((x*x))
-#             except ValueError:
-#                 return 0
-#         mse_value = summation(mse_list)
-#         mse_value /= n
-#         return round(mse_value, 3)
-#     else:
-#         return 0
+def mse(first_list, second_list):
+    if len(first_list) == len(second_list):
+        n = len(first_list)
+        mse_list = []
+        for i in range(0, n):
+            try:
+                first_list[i] = float(first_list[i])
+                second_list[i] = float(second_list[i])
+                x = first_list[i]-second_list[i]
+                mse_list.append((x*x))
+            except ValueError:
+                return 0
+        mse_value = summation(mse_list)
+        mse_value /= n
+        return round(mse_value, 3)
+    else:
+        return 0
 
 
 # Function to compute mae. You cant use Python functions
