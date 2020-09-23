@@ -6,18 +6,19 @@ import math
 
 def sorting(first_list):
     n = len(first_list)
+    sorting_list = first_list.copy()
     for i in range(0, n):
         for j in range(0, n-1):
             try:
-                first_list[j] = float(first_list[j])
-                first_list[j+1] = float(first_list[j+1])
-                if first_list[j] > first_list[j+1]:
-                    temp = first_list[j]
-                    first_list[j] = first_list[j+1]
-                    first_list[j+1] = temp
+                sorting_list[j] = float(sorting_list[j])
+                sorting_list[j+1] = float(sorting_list[j+1])
+                if sorting_list[j] > sorting_list[j+1]:
+                    temp = sorting_list[j]
+                    sorting_list[j] = sorting_list[j+1]
+                    sorting_list[j+1] = temp
             except ValueError:
                 return 0
-    return first_list
+    return sorting_list
 
 
 # Function to compute sum. You cant use Python functions
@@ -45,16 +46,16 @@ def mean(first_list):
 # Function to compute median. You cant use Python functions
 def median(first_list):
 
-    first_list = sorting(first_list)
+    median_list = sorting(first_list)
 
     n = len(first_list)
     if n % 2 == 0:
         j = int(n/2)
-        median_value = (first_list[j]+first_list[j-1])/2
+        median_value = (median_list[j]+median_list[j-1])/2
 
     else:
         j = int(n/2)
-        median_value = first_list[j]
+        median_value = median_list[j]
     return round(median_value, 3)
 
 # Function to compute variance. You cant use Python functions
@@ -62,16 +63,17 @@ def median(first_list):
 
 def variance(first_list):
     n = len(first_list)
+    variance_list = []
     mean_value = summation(first_list)
     mean_value /= n
-    variance_value = 0
     for i in range(0, n):
         try:
             first_list[i] = float(first_list[i])
-            variance_value += (mean_value -
-                               first_list[i])*(mean_value-first_list[i])
+            variance_list.append((mean_value -
+                                  first_list[i])*(mean_value-first_list[i]))
         except ValueError:
             return 0
+    variance_value = summation(variance_list)
     variance_value /= n
     return round(variance_value, 3)
 
@@ -81,34 +83,62 @@ def standard_deviation(first_list):
     n = len(first_list)
     mean_value = summation(first_list)
     mean_value /= n
-    standard_deviation_value = 0
+    standard_deviation_list = []
     for i in range(0, n):
         try:
             first_list[i] = float(first_list[i])
-            standard_deviation_value += (mean_value -
-                                         first_list[i])*(mean_value-first_list[i])
+            standard_deviation_list.append((mean_value -
+                                            first_list[i])*(mean_value-first_list[i]))
         except ValueError:
             return 0
+    standard_deviation_value = summation(standard_deviation_list)
     standard_deviation_value /= n
     standard_deviation_value = math.sqrt(standard_deviation_value)
     return round(standard_deviation_value, 3)
 
 
 # Function to compute RMSE. You cant use Python functions
-# def rmse(first_list, second_list):
-#     # RMSE Logic
-#     # return rmse_value
+def rmse(first_list, second_list):
+    if len(first_list) == len(second_list):
+        n = len(first_list)
+        rmse_list = []
+        for i in range(0, n):
+            try:
+                first_list[i] = float(first_list[i])
+                second_list[i] = float(second_list[i])
+                x = first_list[i]-second_list[i]
+                rmse_list.append((x*x))
+            except ValueError:
+                return 0
+        rmse_value = summation(rmse_list)
+        rmse_value /= n
+        rmse_value = math.sqrt(rmse_value)
+        return round(rmse_value, 3)
+    else:
+        return 0
 
-#     # Function to compute mse. You cant use Python functions
 
-
+# Function to compute mse. You cant use Python functions
 # def mse(first_list, second_list):
-#     # mse Logic
-#     # return mse_value
+#     if len(first_list) == len(second_list):
+#         n = len(first_list)
+#         mse_list = []
+#         for i in range(0, n):
+#             try:
+#                 first_list[i] = float(first_list[i])
+#                 second_list[i] = float(second_list[i])
+#                 x = first_list[i]-second_list[i]
+#                 mse_list.append((x*x))
+#             except ValueError:
+#                 return 0
+#         mse_value = summation(mse_list)
+#         mse_value /= n
+#         return round(mse_value, 3)
+#     else:
+#         return 0
 
-#     # Function to compute mae. You cant use Python functions
 
-
+# Function to compute mae. You cant use Python functions
 # def mae(first_list, second_list):
 #     # mae Logic
 #     # return mae_value
