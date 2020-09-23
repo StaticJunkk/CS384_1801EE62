@@ -39,7 +39,7 @@ def mean(first_list):
 
     sum_value = summation(first_list)
     total_elements = len(first_list)
-    mean_value = round(sum_value/total_elements, 3)
+    mean_value = round(sum_value/total_elements, 6)
     return mean_value
 
 
@@ -56,7 +56,7 @@ def median(first_list):
     else:
         j = int(n/2)
         median_value = median_list[j]
-    return round(median_value, 3)
+    return round(median_value, 6)
 
 # Function to compute variance. You cant use Python functions
 
@@ -75,7 +75,7 @@ def variance(first_list):
             return 0
     variance_value = summation(variance_list)
     variance_value /= n
-    return round(variance_value, 3)
+    return round(variance_value, 6)
 
 
 # Function to compute Standard deviation. You cant use Python functions
@@ -94,7 +94,7 @@ def standard_deviation(first_list):
     standard_deviation_value = summation(standard_deviation_list)
     standard_deviation_value /= n
     standard_deviation_value = math.sqrt(standard_deviation_value)
-    return round(standard_deviation_value, 3)
+    return round(standard_deviation_value, 6)
 
 
 # Function to compute RMSE. You cant use Python functions
@@ -113,7 +113,7 @@ def rmse(first_list, second_list):
         rmse_value = summation(rmse_list)
         rmse_value /= n
         rmse_value = math.sqrt(rmse_value)
-        return round(rmse_value, 3)
+        return round(rmse_value, 6)
     else:
         return 0
 
@@ -133,7 +133,7 @@ def mse(first_list, second_list):
                 return 0
         mse_value = summation(mse_list)
         mse_value /= n
-        return round(mse_value, 3)
+        return round(mse_value, 6)
     else:
         return 0
 
@@ -154,7 +154,7 @@ def mae(first_list, second_list):
                 return 0
         mae_value = summation(mae_list)
         mae_value /= n
-        return round(mae_value, 3)
+        return round(mae_value, 6)
     else:
         return 0
 
@@ -180,7 +180,7 @@ def nse(first_list, second_list):
         numerator_value = summation(numerator_list)
         denominator_value = summation(denominator_list)
         nse_value = 1 - numerator_value/denominator_value
-        return round(nse_value, 3)
+        return round(nse_value, 6)
     else:
         return 0
 
@@ -212,7 +212,7 @@ def pcc(first_list, second_list):
         denominator_value = math.sqrt(
             summation(denominator_list_1)*summation(denominator_list_2))
         pcc_value = numerator_value/denominator_value
-        return round(pcc_value, 3)
+        return round(pcc_value, 6)
     else:
         return 0
 
@@ -233,7 +233,7 @@ def skewness(first_list):
             return 0
     skewness_value = summation(skewness_list)
     skewness_value /= n
-    return round(skewness_value, 3)
+    return round(skewness_value, 6)
 
 
 # Function to compute Kurtosis. You cant use Python functions
@@ -252,8 +252,4 @@ def kurtosis(first_list):
             return 0
     kurtosis_value = summation(kurtosis_list)
     kurtosis_value /= n
-    return round(kurtosis_value, 3)
-
-
-# x = [1, 2, 3, 'yay', 5]
-# print(variance(x))
+    return round(kurtosis_value, 6)
