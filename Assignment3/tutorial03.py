@@ -136,7 +136,7 @@ def country():
                     file_name = 'misc.csv'
 
                 else:
-                    file_name = country_name + '.csv'
+                    file_name = country_name.lower() + '.csv'
 
                 file_path = os.path.join(dir_path, file_name)
                 if os.path.isfile(file_path):
@@ -173,7 +173,7 @@ def email_domain_extract():
                 user_id, domain_id = re.split(r'@', email_id)
                 domain_id_components = re.split(r'\.', domain_id)
                 domain_name = domain_id_components[0]
-                file_name = domain_name + '.csv'
+                file_name = domain_name.lower() + '.csv'
                 file_path = os.path.join(dir_path, file_name)
                 if os.path.isfile(file_path):
                     with open(file_path, 'a+', newline='') as file:
@@ -363,7 +363,7 @@ def state():
                     file_name = 'misc.csv'
 
                 else:
-                    file_name = state_name + '.csv'
+                    file_name = state_name.lower() + '.csv'
 
                 file_path = os.path.join(dir_path, file_name)
                 if os.path.isfile(file_path):
@@ -384,9 +384,39 @@ def state():
         print("Error in reading CSV file")
 
 
-# def blood_group():
-#     # Read csv and process
-#     pass
+def blood_group():
+    try:
+        dir_path = os.path.join(direct_path, r'blood_group')
+        if os.path.isdir(dir_path):
+            pass
+        else:
+            os.mkdir(dir_path)
+        with open('studentinfo_cs384.csv', 'r') as info_file:
+            reader = csv.DictReader(info_file)
+            for row in reader:
+                blood_grp = row['blood_group']
+                if blood_grp == '':
+                    file_name = 'misc.csv'
+
+                else:
+                    file_name = blood_grp.lower() + '.csv'
+
+                file_path = os.path.join(dir_path, file_name)
+                if os.path.isfile(file_path):
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=[
+                                                'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                        writer.writerow(row)
+                        file.close()
+                else:
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=[
+                                                'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                        writer.writeheader()
+                        writer.writerow(row)
+                        file.close()
+    except:
+        print("Error in reading CSV file")
 
 
 # # Create the new file here and also sort it in this function only.
@@ -398,4 +428,5 @@ def state():
 # gender()
 # email_domain_extract()
 # dob()
-state()
+# state()
+blood_group()
