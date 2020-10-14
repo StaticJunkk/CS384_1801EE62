@@ -348,9 +348,40 @@ def dob():
         print("Error in reading CSV file")
 
 
-# def state():
-#     # Read csv and process
-#     pass
+def state():
+    try:
+        dir_path = os.path.join(direct_path, r'state')
+        if os.path.isdir(dir_path):
+            pass
+        else:
+            os.mkdir(dir_path)
+        with open('studentinfo_cs384.csv', 'r') as info_file:
+            reader = csv.DictReader(info_file)
+            for row in reader:
+                state_name = row['state']
+                if state_name == '':
+                    file_name = 'misc.csv'
+
+                else:
+                    file_name = state_name + '.csv'
+
+                file_path = os.path.join(dir_path, file_name)
+                if os.path.isfile(file_path):
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=[
+                                                'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                        writer.writerow(row)
+                        file.close()
+                else:
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=[
+                                                'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                        writer.writeheader()
+                        writer.writerow(row)
+                        file.close()
+
+    except:
+        print("Error in reading CSV file")
 
 
 # def blood_group():
@@ -366,4 +397,5 @@ def dob():
 # country()
 # gender()
 # email_domain_extract()
-dob()
+# dob()
+state()
