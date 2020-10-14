@@ -38,8 +38,10 @@ def course():
                             os.mkdir(new_path)
                             courses.append(branch_name)
                     # print(course_type)
+
                     pattern = re.compile(r'01')
                     if re.match(pattern, course_type):
+                        course_name = 'btech'
                         type_path = os.path.join(new_path, 'btech')
                         # print(type_path)
                         if os.path.isdir(type_path):
@@ -48,6 +50,7 @@ def course():
                             os.mkdir(type_path)
                     pattern = re.compile(r'11')
                     if re.match(pattern, course_type):
+                        course_name = 'mtech'
                         type_path = os.path.join(new_path, 'mtech')
                         # print(type_path)
                         if os.path.isdir(type_path):
@@ -56,6 +59,7 @@ def course():
                             os.mkdir(type_path)
                     pattern = re.compile(r'12')
                     if re.match(pattern, course_type):
+                        course_name = 'msc'
                         type_path = os.path.join(new_path, 'msc')
                         # print(type_path)
                         if os.path.isdir(type_path):
@@ -64,25 +68,80 @@ def course():
                             os.mkdir(type_path)
                     pattern = re.compile(r'21')
                     if re.match(pattern, course_type):
+                        course_name = 'phd'
                         type_path = os.path.join(new_path, 'phd')
                         # print(type_path)
                         if os.path.isdir(type_path):
                             pass
                         else:
                             os.mkdir(type_path)
+                    file_name = year+'_'+branch_name.lower()+'_'+course_name+'.csv'
+                    file_path = os.path.join(type_path, file_name)
+                    if os.path.isfile(file_path):
+                        with open(file_path, 'a+', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=[
+                                                    'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                            writer.writerow(row)
+                            file.close()
+                    else:
+                        with open(file_path, 'a+', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=[
+                                                    'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                            writer.writeheader()
+                            writer.writerow(row)
+                            file.close()
 
                 else:
-                    pass
+                    misc_path = os.path.join(dir_path, 'misc.csv')
+
+                    if os.path.isfile(misc_path):
+                        with open(misc_path, 'a+', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=[
+                                                    'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                            writer.writerow(row)
+                            file.close()
+                    else:
+                        with open(misc_path, 'a+', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=[
+                                                    'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                            writer.writeheader()
+                            writer.writerow(row)
+                            file.close()
 
     except:
         print('Error while reading CSV file')
 
 
-course()
+def country():
+    try:
+        dir_path = os.path.join(path, r'analytics\country')
+        with open('studentinfo_cs384.csv', 'r') as info_file:
+            reader = csv.DictReader(info_file)
+            for row in reader:
+                country_name = row['country']
+                if country_name == '':
+                    file_name = 'misc.csv'
 
-# def country():
-#     # Read csv and process
-#     pass
+                else:
+                    file_name = country_name + '.csv'
+
+                file_path = os.path.join(dir_path, file_name)
+                if os.path.isfile(file_path):
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=[
+                                                'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                        writer.writerow(row)
+                        file.close()
+                else:
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=[
+                                                'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                        writer.writeheader()
+                        writer.writerow(row)
+                        file.close()
+
+    except:
+        print("Error in reading CSV file")
 
 
 # def email_domain_extract():
@@ -114,3 +173,7 @@ course()
 # def new_file_sort():
 #     # Read csv and process
 #     pass
+
+
+# course()
+country()
