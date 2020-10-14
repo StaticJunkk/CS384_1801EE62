@@ -449,6 +449,25 @@ def new_file_sort():
                     writer.writeheader()
                     writer.writerow(copy_row)
                     file.close()
+    file_name = 'studentinfo_cs384_names_split.csv'
+    file_path = os.path.join(dir_path, file_name)
+    with open(file_path, 'r') as info_file:
+        reader = csv.reader(info_file)
+        sorted_list = sorted(reader, key=lambda row: row[1])
+        file.close()
+    file_name = 'studentinfo_cs384_names_split_sorted_first_name.csv'
+    file_path = os.path.join(dir_path, file_name)
+    if os.path.isfile(file_path):
+        with open(file_path, 'a+', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(sorted_list[:-1])
+            file.close()
+    else:
+        with open(file_path, 'a+', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(field_names)
+            writer.writerows(sorted_list[:-1])
+            file.close()
 
     # except:
     #     print("Error in reading CSV file")
