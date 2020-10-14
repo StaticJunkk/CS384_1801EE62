@@ -420,13 +420,45 @@ def blood_group():
 
 
 # # Create the new file here and also sort it in this function only.
-# def new_file_sort():
-#     # Read csv and process
-#     pass
+def new_file_sort():
+    # try:
+    dir_path = direct_path
+    fields = ['id', 'full_name', 'country', 'email',
+              'gender', 'dob', 'blood_group', 'state']
+    with open('studentinfo_cs384.csv', 'r') as info_file:
+        reader = csv.DictReader(info_file)
+        for row in reader:
+            copy_row = row.copy()
+            first_name, last_name = re.split(
+                r' ', row['full_name'], maxsplit=1)
+            del(copy_row['full_name'])
+            copy_row['first_name'] = first_name
+            copy_row['last_name'] = last_name
+            file_name = 'studentinfo_cs384_names_split.csv'
+            field_names = ['id', 'first_name', 'last_name', 'country',
+                           'email', 'gender', 'dob', 'blood_group', 'state']
+            file_path = os.path.join(dir_path, file_name)
+            if os.path.isfile(file_path):
+                with open(file_path, 'a+', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=field_names)
+                    writer.writerow(copy_row)
+                    file.close()
+            else:
+                with open(file_path, 'a+', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=field_names)
+                    writer.writeheader()
+                    writer.writerow(copy_row)
+                    file.close()
+
+    # except:
+    #     print("Error in reading CSV file")
+
+
 # course()
 # country()
 # gender()
 # email_domain_extract()
 # dob()
 # state()
-blood_group()
+# blood_group()
+new_file_sort()
