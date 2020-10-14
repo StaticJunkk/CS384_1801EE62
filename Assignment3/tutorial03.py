@@ -3,10 +3,19 @@ import os
 import re
 os.system('cls')
 path = os.getcwd()
+direct_path = os.path.join(path, r'analytics')
+if os.path.isdir(direct_path):
+    pass
+else:
+    os.mkdir(direct_path)
 
 
 def course():
-    dir_path = os.path.join(path, r'analytics\course')
+    dir_path = os.path.join(direct_path, r'course')
+    if os.path.isdir(dir_path):
+        pass
+    else:
+        os.mkdir(dir_path)
     courses = []
     course_type = ['btech', 'mtech', 'msc', 'phd']
     try:
@@ -114,7 +123,11 @@ def course():
 
 def country():
     try:
-        dir_path = os.path.join(path, r'analytics\country')
+        dir_path = os.path.join(direct_path, r'country')
+        if os.path.isdir(dir_path):
+            pass
+        else:
+            os.mkdir(dir_path)
         with open('studentinfo_cs384.csv', 'r') as info_file:
             reader = csv.DictReader(info_file)
             for row in reader:
@@ -144,14 +157,49 @@ def country():
         print("Error in reading CSV file")
 
 
-# def email_domain_extract():
-#     # Read csv and process
-#     pass
+def email_domain_extract():
+    try:
+        dir_path = os.path.join(direct_path, r'email_domain')
+        if os.path.isdir(dir_path):
+            pass
+        else:
+            os.mkdir(dir_path)
+        with open('studentinfo_cs384.csv', 'r') as info_file:
+            reader = csv.DictReader(info_file)
+            for row in reader:
+                email_id = row['email']
+                if email_id is '':
+                    email_id = 'misc@misc.com'
+                user_id, domain_id = re.split(r'@', email_id)
+                domain_id_components = re.split(r'\.', domain_id)
+                domain_name = domain_id_components[0]
+                file_name = domain_name + '.csv'
+                file_path = os.path.join(dir_path, file_name)
+                if os.path.isfile(file_path):
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=[
+                                                'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                        writer.writerow(row)
+                        file.close()
+                else:
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=[
+                                                'id', 'full_name', 'country', 'email', 'gender', 'dob', 'blood_group', 'state'])
+                        writer.writeheader()
+                        writer.writerow(row)
+                        file.close()
+
+    except:
+        print("Error in reading CSV file")
 
 
 def gender():
     try:
-        dir_path = os.path.join(path, r'analytics\gender')
+        dir_path = os.path.join(direct_path, r'gender')
+        if os.path.isdir(dir_path):
+            pass
+        else:
+            os.mkdir(dir_path)
         with open('studentinfo_cs384.csv', 'r') as info_file:
             reader = csv.DictReader(info_file)
             for row in reader:
@@ -203,4 +251,5 @@ def gender():
 
 # course()
 # country()
-gender()
+# gender()
+email_domain_extract()
