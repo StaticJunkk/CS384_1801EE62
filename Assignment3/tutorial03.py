@@ -9,6 +9,8 @@ if os.path.isdir(direct_path):
 else:
     os.mkdir(direct_path)
 
+# function for course task
+
 
 def course():
     dir_path = os.path.join(direct_path, r'course')
@@ -21,7 +23,6 @@ def course():
     try:
         with open('studentinfo_cs384.csv', 'r') as info_file:
             reader = csv.DictReader(info_file)
-
             for row in reader:
                 roll_no = row['id']
                 pattern = re.compile(r'[0-9]{4}[A-Z]{2}[0-9]{2}')
@@ -37,7 +38,6 @@ def course():
                         if re.match(pattern, course):
                             check_pass = 1
                             break
-
                     if check_pass == 1:
                         pass
                     else:
@@ -46,7 +46,6 @@ def course():
                         else:
                             os.mkdir(new_path)
                             courses.append(branch_name)
-                    # print(course_type)
 
                     pattern = re.compile(r'01')
                     if re.match(pattern, course_type):
@@ -57,6 +56,7 @@ def course():
                             pass
                         else:
                             os.mkdir(type_path)
+
                     pattern = re.compile(r'11')
                     if re.match(pattern, course_type):
                         course_name = 'mtech'
@@ -66,6 +66,7 @@ def course():
                             pass
                         else:
                             os.mkdir(type_path)
+
                     pattern = re.compile(r'12')
                     if re.match(pattern, course_type):
                         course_name = 'msc'
@@ -75,6 +76,7 @@ def course():
                             pass
                         else:
                             os.mkdir(type_path)
+
                     pattern = re.compile(r'21')
                     if re.match(pattern, course_type):
                         course_name = 'phd'
@@ -84,6 +86,7 @@ def course():
                             pass
                         else:
                             os.mkdir(type_path)
+
                     file_name = year+'_'+branch_name.lower()+'_'+course_name+'.csv'
                     file_path = os.path.join(type_path, file_name)
                     if os.path.isfile(file_path):
@@ -206,7 +209,6 @@ def gender():
                 gender_type = row['gender']
                 if gender_type == '':
                     file_name = 'misc.csv'
-
                 else:
                     file_name = gender_type.lower() + '.csv'
 
@@ -259,8 +261,8 @@ def dob():
                             writer.writeheader()
                             writer.writerow(row)
                             file.close()
-                elif int(year) <= 2004 and int(year) >= 2000:
 
+                elif int(year) <= 2004 and int(year) >= 2000:
                     file_name = 'bday_2000_2004.csv'
                     file_path = os.path.join(dir_path, file_name)
                     if os.path.isfile(file_path):
@@ -276,8 +278,8 @@ def dob():
                             writer.writeheader()
                             writer.writerow(row)
                             file.close()
-                elif int(year) <= 2009 and int(year) >= 2005:
 
+                elif int(year) <= 2009 and int(year) >= 2005:
                     file_name = 'bday_2005_2009.csv'
                     file_path = os.path.join(dir_path, file_name)
                     if os.path.isfile(file_path):
@@ -293,8 +295,8 @@ def dob():
                             writer.writeheader()
                             writer.writerow(row)
                             file.close()
-                elif int(year) <= 2014 and int(year) >= 2010:
 
+                elif int(year) <= 2014 and int(year) >= 2010:
                     file_name = 'bday_2010_2014.csv'
                     file_path = os.path.join(dir_path, file_name)
                     if os.path.isfile(file_path):
@@ -310,8 +312,8 @@ def dob():
                             writer.writeheader()
                             writer.writerow(row)
                             file.close()
-                elif int(year) <= 2020 and int(year) >= 2015:
 
+                elif int(year) <= 2020 and int(year) >= 2015:
                     file_name = 'bday_2015_2020.csv'
                     file_path = os.path.join(dir_path, file_name)
                     if os.path.isfile(file_path):
@@ -327,6 +329,7 @@ def dob():
                             writer.writeheader()
                             writer.writerow(row)
                             file.close()
+
                 else:
                     file_name = 'misc.csv'
                     file_path = os.path.join(dir_path, file_name)
@@ -421,63 +424,63 @@ def blood_group():
 
 # # Create the new file here and also sort it in this function only.
 def new_file_sort():
-    # try:
-    dir_path = direct_path
-    fields = ['id', 'full_name', 'country', 'email',
-              'gender', 'dob', 'blood_group', 'state']
-    with open('studentinfo_cs384.csv', 'r') as info_file:
-        reader = csv.DictReader(info_file)
-        for row in reader:
-            copy_row = row.copy()
-            first_name, last_name = re.split(
-                r' ', row['full_name'], maxsplit=1)
-            del(copy_row['full_name'])
-            copy_row['first_name'] = first_name
-            copy_row['last_name'] = last_name
-            file_name = 'studentinfo_cs384_names_split.csv'
-            field_names = ['id', 'first_name', 'last_name', 'country',
-                           'email', 'gender', 'dob', 'blood_group', 'state']
-            file_path = os.path.join(dir_path, file_name)
-            if os.path.isfile(file_path):
-                with open(file_path, 'a+', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=field_names)
-                    writer.writerow(copy_row)
-                    file.close()
-            else:
-                with open(file_path, 'a+', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=field_names)
-                    writer.writeheader()
-                    writer.writerow(copy_row)
-                    file.close()
-    file_name = 'studentinfo_cs384_names_split.csv'
-    file_path = os.path.join(dir_path, file_name)
-    with open(file_path, 'r') as info_file:
-        reader = csv.reader(info_file)
-        sorted_list = sorted(reader, key=lambda row: row[1])
-        file.close()
-    file_name = 'studentinfo_cs384_names_split_sorted_first_name.csv'
-    file_path = os.path.join(dir_path, file_name)
-    if os.path.isfile(file_path):
-        with open(file_path, 'a+', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(sorted_list[:-1])
+    try:
+        dir_path = direct_path
+        fields = ['id', 'full_name', 'country', 'email',
+                  'gender', 'dob', 'blood_group', 'state']
+        with open('studentinfo_cs384.csv', 'r') as info_file:
+            reader = csv.DictReader(info_file)
+            for row in reader:
+                copy_row = row.copy()
+                first_name, last_name = re.split(
+                    r' ', row['full_name'], maxsplit=1)
+                del(copy_row['full_name'])
+                copy_row['first_name'] = first_name
+                copy_row['last_name'] = last_name
+                file_name = 'studentinfo_cs384_names_split.csv'
+                field_names = ['id', 'first_name', 'last_name', 'country',
+                               'email', 'gender', 'dob', 'blood_group', 'state']
+                file_path = os.path.join(dir_path, file_name)
+                if os.path.isfile(file_path):
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=field_names)
+                        writer.writerow(copy_row)
+                        file.close()
+                else:
+                    with open(file_path, 'a+', newline='') as file:
+                        writer = csv.DictWriter(file, fieldnames=field_names)
+                        writer.writeheader()
+                        writer.writerow(copy_row)
+                        file.close()
+        file_name = 'studentinfo_cs384_names_split.csv'
+        file_path = os.path.join(dir_path, file_name)
+        with open(file_path, 'r') as info_file:
+            reader = csv.reader(info_file)
+            sorted_list = sorted(reader, key=lambda row: row[1])
             file.close()
-    else:
-        with open(file_path, 'a+', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(field_names)
-            writer.writerows(sorted_list[:-1])
-            file.close()
+        file_name = 'studentinfo_cs384_names_split_sorted_first_name.csv'
+        file_path = os.path.join(dir_path, file_name)
+        if os.path.isfile(file_path):
+            with open(file_path, 'a+', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerows(sorted_list[:-1])
+                file.close()
+        else:
+            with open(file_path, 'a+', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(field_names)
+                writer.writerows(sorted_list[:-1])
+                file.close()
 
-    # except:
-    #     print("Error in reading CSV file")
+    except:
+        print("Error in reading CSV file")
 
 
-# course()
-# country()
-# gender()
-# email_domain_extract()
-# dob()
-# state()
-# blood_group()
+course()
+country()
+gender()
+email_domain_extract()
+dob()
+state()
+blood_group()
 new_file_sort()
