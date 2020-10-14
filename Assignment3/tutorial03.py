@@ -7,32 +7,39 @@ path = os.getcwd()
 
 def course():
     dir_path = os.path.join(path, r'analytics\course')
-    courses = ('cs', 'ee', 'me', 'cb', 'ce', 'ms', 'ph',
-               'ma', 'hs', 'ch', 'nt', 'mt', 'ms', 'mc')
-    course_type = ('btech', 'mtech', 'msc', 'phd')
-    for course_name in courses:
-        new_path = os.path.join(dir_path, course_name)
-        if os.path.exists(new_path):
-            for types in course_type:
-                inner_path = os.path.join(new_path, types)
-                if os.path.exists(inner_path):
-                    pass
-                else:
-                    os.mkdir(inner_path)
-        else:
-            os.mkdir(new_path)
-            new_path = os.path.join(dir_path, course_name)
-        if os.path.exists(new_path):
-            for types in course_type:
-                inner_path = os.path.join(new_path, types)
-                if os.path.exists(inner_path):
-                    pass
-                else:
-                    os.mkdir(inner_path)
+    courses = []
+    course_type = ['btech', 'mtech', 'msc', 'phd']
     try:
         with open('studentinfo_cs384.csv', 'r') as info_file:
             reader = csv.DictReader(info_file)
-            # for rows in reader:
+            for row in reader:
+                roll_no = row['id']
+                if (len(roll_no) == 8):
+                    year = roll_no[0:2]
+                    course_type = roll_no[2:4]
+                    branch_name = roll_no[4:6]
+                    serial_no = roll_no[6:8]
+                    pattern = re.compile(branch_name)
+                    check_pass = 0
+
+                    for course in courses:
+                        if re.match(pattern, course):
+                            check_pass = 1
+                            break
+
+                    if check_pass == 1:
+                        pass
+                    else:
+                        new_path = os.path.join(dir_path, branch_name.lower())
+                        # print(new_path)
+                        if os.path.exists(new_path):
+                            pass
+                        else:
+                            os.mkdir(new_path)
+                            courses.append(branch_name)
+                else:
+                    pass
+
     except:
         print('Error while reading CSV file')
 

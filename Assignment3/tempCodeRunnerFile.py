@@ -1,1 +1,1 @@
-for rows in reader:
+try:
