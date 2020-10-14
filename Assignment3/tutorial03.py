@@ -9,12 +9,26 @@ def course():
     dir_path = os.path.join(path, r'analytics\course')
     courses = ('cs', 'ee', 'me', 'cb', 'ce', 'ms', 'ph',
                'ma', 'hs', 'ch', 'nt', 'mt', 'ms', 'mc')
+    course_type = ('btech', 'mtech', 'msc', 'phd')
     for course_name in courses:
         new_path = os.path.join(dir_path, course_name)
         if os.path.exists(new_path):
-            pass
+            for types in course_type:
+                inner_path = os.path.join(new_path, types)
+                if os.path.exists(inner_path):
+                    pass
+                else:
+                    os.mkdir(inner_path)
         else:
             os.mkdir(new_path)
+            new_path = os.path.join(dir_path, course_name)
+        if os.path.exists(new_path):
+            for types in course_type:
+                inner_path = os.path.join(new_path, types)
+                if os.path.exists(inner_path):
+                    pass
+                else:
+                    os.mkdir(inner_path)
     try:
         with open('studentinfo_cs384.csv', 'r') as info_file:
             reader = csv.DictReader(info_file)
