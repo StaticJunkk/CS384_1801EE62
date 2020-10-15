@@ -1,15 +1,21 @@
 import csv
 import os
 import re
+import shutil
 os.system('cls')
 path = os.getcwd()
 direct_path = os.path.join(path, r'analytics')
-if os.path.isdir(direct_path):
-    pass
-else:
+
+
+def del_create_analytics_folder():
+    if os.path.isdir(direct_path):
+        shutil.rmtree(direct_path)
     os.mkdir(direct_path)
 
-# function for course task
+
+# if os.path.isdir(direct_path):
+#     pass
+# else:
 
 
 def course():
@@ -476,11 +482,12 @@ def new_file_sort():
         print("Error in reading CSV file")
 
 
-course()
-country()
-gender()
-email_domain_extract()
-dob()
-state()
-blood_group()
-new_file_sort()
+# del_create_analytics_folder()
+# course()
+# country()
+# gender()
+# email_domain_extract()
+# dob()
+# state()
+# blood_group()
+# new_file_sort()
