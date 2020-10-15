@@ -25,7 +25,7 @@ def course():
             reader = csv.DictReader(info_file)
             for row in reader:
                 roll_no = row['id']
-                pattern = re.compile(r'[0-9]{4}[A-Z]{2}[0-9]{2}')
+                pattern = re.compile(r'^[0-9]{4}[A-Z]{2}[0-9]{2}$')
                 if re.match(pattern, roll_no):
                     year = roll_no[0:2]
                     course_type = roll_no[2:4]
