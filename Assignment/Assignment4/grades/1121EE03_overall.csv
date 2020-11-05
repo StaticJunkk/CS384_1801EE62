@@ -1,4 +1,5 @@
 Roll: 1121EE03
-Semester Wise Details
 Semester,Semester Credits,Semester Credits Cleared,SPI,Total Credits,Total Credits Cleared,CPI
-"[1, 2, 4]","{1: 12, 2: 4, 4: 4}","{1: 12, 2: 4, 4: 4}","{1: 7.5, 2: 0.0, 4: 0.0}","{1: 12, 2: 16, 4: 20}","{1: 12, 2: 16, 4: 20}","{1: 7.5, 2: 5.62, 4: 0.0}"
+1,12,12,7.5,12,12,7.5
+2,4,4,0.0,16,16,5.62
+4,4,4,0.0,0,0,0.0
