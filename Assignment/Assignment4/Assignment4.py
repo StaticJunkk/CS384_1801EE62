@@ -52,7 +52,7 @@ def roll_number_individual():
                         except:
                             print(f"Error opening {file_name}")
                 else:
-                    print(file)
+                    print(str(file))
                     fieldname = ['sl', 'roll', 'sem', 'year', 'sub_code',
                                  'total_credits', 'credit_obtained', 'timestamp', 'sub_type']
                     file_path = os.path.join(folder_path, misc_file_name)
@@ -87,7 +87,7 @@ def roll_number_individual():
 def roll_number_overall():
     os.chdir(direct_path)
     for file in os.listdir(direct_path):
-        if file != 'misc.csv':
+        if str(file) != 'misc.csv':
             name_file = re.split('_', str(file), maxsplit=1)
             roll_no = name_file[0]
             if(name_file[1] == 'overall.csv'):
@@ -115,16 +115,19 @@ def roll_number_overall():
                         creds[i] = 4
                     elif grade == 'F':
                         creds[i] = 0
-                        back_log.append(i)
+                        back_log.append(i-1)
                     elif grade == 'I':
                         creds[i] = 0
                     i += 1
+
                 sem = set(df['Sem'])
                 keys = list(sem)
                 sem = {}
                 semwise_score = {}
                 semwise_credits = {}
+                semwise_credits_cleared = {}
                 total_credits = {}
+                total_credits_cleared = {}
                 SPI = {}
                 CPI = {}
                 for key in keys:
@@ -132,24 +135,31 @@ def roll_number_overall():
                         sem[key] = key
                         semwise_score[key] = 0
                         semwise_credits[key] = 0
+                        semwise_credits_cleared[key] = 0
                         SPI[key] = 0
                         CPI[key] = 0
                         total_credits[key] = 0
+                        total_credits_cleared[key] = 0
                     except:
                         pass
                 i = 0
                 for value in df['Sem']:
                     try:
                         semwise_score[value] += creds[i]*df['Credits'][i]
+                        if df['Grade'][i] != 'F' and df['Grade'][i] != 'I':
+                            semwise_credits_cleared[value] += df['Credits'][i]
                         semwise_credits[value] += df['Credits'][i]
+
                     except:
                         pass
                     i += 1
                 for key in keys:
                     try:
-                        SPI[key] = round(semwise_score[key] /
-                                         semwise_credits[key], 2)
-                        CPI[key] = SPI[key]
+                        if semwise_credits_cleared[key] != 0:
+                            SPI[key] = round(semwise_score[key] /
+                                             semwise_credits_cleared[key], 2)
+                        else:
+                            SPI[key] = 0
                     except:
                         pass
                 i = 0
@@ -157,12 +167,24 @@ def roll_number_overall():
                     try:
                         if i == 0 and i not in back_log:
                             total_credits[key] = semwise_credits[key]
+                            total_credits_cleared[key] = semwise_credits[key]
                             x = total_credits[key]
+                            y = total_credits_cleared[key]
+                        elif i == 0 and i in back_log:
+                            total_credits[key] = semwise_credits[key]
+                            total_credits_cleared[key] = 0
+                            x = total_credits[key]
+                            y = total_credits_cleared[key]
                         elif i not in back_log:
                             total_credits[key] += (semwise_credits[key] + x)
+                            total_credits_cleared[key] += (
+                                semwise_credits[key] + y)
                             x = total_credits[key]
+                            y = total_credits_cleared[key]
                         elif i in back_log:
-                            pass
+                            total_credits[key] += (semwise_credits[key] + x)
+                            x = total_credits[key]
+                            total_credits_cleared[key] = y
                     except:
                         pass
                     i += 1
@@ -170,19 +192,26 @@ def roll_number_overall():
                 for key in keys:
                     try:
                         x = 0
-                        for j in range(1, i+2):
-                            #print(key, SPI[j], semwise_credits[j])
-                            x += SPI[j]*semwise_credits[j]
-                        CPI[key] = round(x/total_credits[key], 2)
+                        y = 0
+                        for j in sem:
+                            x += SPI[j]*semwise_credits_cleared[j]
+                        if total_credits_cleared[key] != 0:
+                            y = x/total_credits_cleared[key]
+                        else:
+                            y = 0
+                        if str(file) == '1121EE03_individual.csv':
+                            print(x, y)
+                        CPI[key] = round(y, 2)
                         i += 1
-                        if(i > int(key)):
-                            break
                     except:
-                        pass
+                        print(f'Error while working on -> {file}')
+                if str(file) == '1121EE03_individual.csv':
+                    for key in keys:
+                        print(CPI[key])
                 data_entry = []
                 for key in keys:
-                    lst = [sem[key], semwise_credits[key], semwise_credits[key],
-                           SPI[key], total_credits[key], total_credits[key], CPI[key]]
+                    lst = [sem[key], semwise_credits[key], semwise_credits_cleared[key],
+                           SPI[key], total_credits[key], total_credits_cleared[key], CPI[key]]
                     data_entry.append(lst)
                 folder_path = direct_path
                 file_name = roll_no + '_overall.csv'
