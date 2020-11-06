@@ -38,7 +38,25 @@ def rename_Game_of_Thrones(folder_name):
 
 
 def rename_Sherlock(folder_name):
-    pass
+    os.chdir(folder_name)
+    files = os.listdir(folder_name)
+    for file in files:
+        pattern = re.compile('\d+')
+        info = re.split('\.', file)
+        number_info = re.findall(pattern, file)
+        season_number = number_info[0]
+        episode_number = number_info[1]
+        if len(season_number) < season_padding:
+            season_number = int(int(season_padding) -
+                                len(season_number))*'0'+season_number
+        if len(episode_number) < episode_padding:
+            episode_number = int(int(episode_padding) -
+                                 len(episode_number))*'0'+episode_number
+        season_number = season_number.strip()
+        episode_number = episode_number.strip()
+        new_name = info[0]+' - Season '+season_number + \
+            ' Episode '+episode_number+'.'+info[-1]
+        os.rename(file, new_name)
 
 
 def rename_Suits(folder_name):
