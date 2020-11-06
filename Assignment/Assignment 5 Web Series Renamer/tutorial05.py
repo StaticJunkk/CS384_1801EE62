@@ -65,11 +65,11 @@ def rename_Suits(folder_name):
     files = os.listdir(folder_name)
     for file in files:
         info = re.split('-', file)
-        series_name, given_number, episode_name_given = info[0], info[1], info[-1]
+        series_name, given_number, episode_name_given = info[0], info[1], info[2]
         series_name = series_name.strip()
         given_number = given_number.strip()
         episode_name_given = episode_name_given.strip()
-        info = re.split('x', given_number)
+        info = re.split('x', given_number, maxsplit=2)
         season_number, episode_number = info[0], info[-1]
         season_number = season_number.strip()
         episode_number = episode_number.strip()
@@ -85,6 +85,7 @@ def rename_Suits(folder_name):
             season_number + ' Episode '+episode_number + ' - '
         info = re.split('\.', episode_name_given)
         episode_name = info[0]
+        info = re.split('\.', file)
         extension = info[-1]
         new_name += episode_name + '.' + extension.strip()
         try:
@@ -189,7 +190,8 @@ while ch == 0:
             rename_Sherlock(folder_path)
         elif x == '4':
             folder_path = os.path.join(subtitle_path, 'Suits')
-            rename_Suits(folder_path)
+            deleted_file = rename_Suits(folder_path)
+            print(f"Total Duplicate files removed -> {deleted_file}")
         else:
             folder_path = os.path.join(subtitle_path, 'How I Met Your Mother')
             deleted_file = rename_How_I_Met_Your_Mother(folder_path)
