@@ -60,7 +60,42 @@ def rename_Sherlock(folder_name):
 
 
 def rename_Suits(folder_name):
-    pass
+    count = 0
+    os.chdir(folder_name)
+    files = os.listdir(folder_name)
+    for file in files:
+        info = re.split('-', file)
+        series_name, given_number, episode_name_given = info[0], info[1], info[-1]
+        series_name = series_name.strip()
+        given_number = given_number.strip()
+        episode_name_given = episode_name_given.strip()
+        info = re.split('x', given_number)
+        season_number, episode_number = info[0], info[-1]
+        season_number = season_number.strip()
+        episode_number = episode_number.strip()
+        if len(season_number) < season_padding:
+            season_number = int(int(season_padding) -
+                                len(season_number))*'0'+season_number
+        if len(episode_number) < episode_padding:
+            episode_number = int(int(episode_padding) -
+                                 len(episode_number))*'0'+episode_number
+        season_number = season_number.strip()
+        episode_number = episode_number.strip()
+        new_name = series_name + ' - Season ' + \
+            season_number + ' Episode '+episode_number + ' - '
+        info = re.split('\.', episode_name_given)
+        episode_name = info[0]
+        extension = info[-1]
+        new_name += episode_name + '.' + extension.strip()
+        try:
+            os.rename(file, new_name)
+        except:
+            print(f"Duplicate file found -> {file}\nDeleting File now")
+            os.remove(file)
+            print("\n-----------------\nFile Deleted\n")
+            count += 1
+            continue
+    return count
 
 
 def rename_How_I_Met_Your_Mother(folder_name):
