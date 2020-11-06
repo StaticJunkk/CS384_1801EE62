@@ -1,9 +1,36 @@
+import os
+import re
+
+
 def rename_FIR(folder_name):
     pass
 
 
 def rename_Game_of_Thrones(folder_name):
-    pass
+    for file in os.listdir(folder_name):
+        series_name, given_number, episode_name_given = re.split('-', file)
+        series_name = series_name.strip()
+        given_number = given_number.strip()
+        episode_name_given = episode_name_given.strip()
+        season_number, episode_number = re.split('x', given_number)
+        season_number = season_number.strip()
+        episode_number = episode_number.strip()
+        if len(season_number) < season_padding:
+            season_number = int(int(season_padding) -
+                                len(season_number))*'0'+season_number
+        if len(episode_number) < episode_padding:
+            episode_number = int(int(episode_padding) -
+                                 len(episode_number))*'0'+episode_number
+        season_number = season_number.strip()
+        episode_number = episode_number.strip()
+        new_name = series_name + ' - Season ' + \
+            season_number + ' Episode '+episode_number + ' - '
+        info = re.split('\.', episode_name_given)
+        episode_name = info[0]
+        extension = info[-1]
+        new_name += episode_name + '.' + extension.strip()
+        os.chdir(folder_name)
+        os.rename(file, new_name)
 
 
 def rename_Sherlock(folder_name):
@@ -18,6 +45,8 @@ def rename_How_I_Met_Your_Mother(folder_name):
     pass
 
 
+subtitle_path = os.path.join(os.getcwd(), 'Subtitles')
+
 ch = 0
 while ch == 0:
     x = input('''Select the series name:
@@ -27,20 +56,48 @@ while ch == 0:
     4. Suits
     5. How I Met Your Mother
     ''')
-
+    print(type(x))
     valid_entries = ['1', '2', '3', '4', '5']
     if x not in valid_entries:
         print(
             f"\nError: You entered -> {x}\n{x} is an Invalid Entry\nPlease enter a valid entry\n")
     else:
+        print('You have entered a valid input\n----------------------------------------\n')
+        check_season_padding = 0
+        while check_season_padding == 0:
+            global season_padding
+            season_padding = input(
+                "Please select padding for season number -> ")
+            try:
+                season_padding = float(season_padding)
+                check_season_padding = 1
+            except:
+                print(
+                    'Invalid Season Padding\nPlease enter again\n----------------------------------------\n')
+        check_episode_padding = 0
+        while check_episode_padding == 0:
+            global episode_padding
+            episode_padding = input(
+                "Please select padding for episode number -> ")
+            try:
+                episode_padding = float(episode_padding)
+                check_episode_padding = 1
+            except:
+                print(
+                    'Invalid episode Padding\nPlease enter again\n----------------------------------------\n')
         ch = 1
-        if x == 1:
-            rename_FIR
-        elif x == 2:
-            rename_Game_of_Thrones
-        elif x == 3:
-            rename_Sherlock
-        elif x == 4:
-            rename_Suits
+        if x == '1':
+            folder_path = os.path.join(subtitle_path, 'FIR')
+            rename_FIR(folder_path)
+        elif x == '2':
+            folder_path = os.path.join(subtitle_path, 'Game of Thrones')
+            rename_Game_of_Thrones(folder_path)
+        elif x == '3':
+            folder_path = os.path.join(subtitle_path, 'Sherlock')
+            rename_Sherlock(folder_path)
+        elif x == '4':
+            folder_path = os.path.join(subtitle_path, 'Suits')
+            rename_Suits(folder_path)
         else:
-            rename_How_I_Met_Your_Mother
+            folder_path = os.path.join(subtitle_path, 'How I Met Your Mother')
+            rename_How_I_Met_Your_Mother(folder_path)
