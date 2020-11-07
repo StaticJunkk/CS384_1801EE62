@@ -52,7 +52,6 @@ def roll_number_individual():
                         except:
                             print(f"Error opening {file_name}")
                 else:
-                    print(str(file))
                     fieldname = ['sl', 'roll', 'sem', 'year', 'sub_code',
                                  'total_credits', 'credit_obtained', 'timestamp', 'sub_type']
                     file_path = os.path.join(folder_path, misc_file_name)
@@ -118,6 +117,7 @@ def roll_number_overall():
                         back_log.append(i-1)
                     elif grade == 'I':
                         creds[i] = 0
+                        back_log.append(i-1)
                     i += 1
 
                 sem = set(df['Sem'])
@@ -141,7 +141,7 @@ def roll_number_overall():
                         total_credits[key] = 0
                         total_credits_cleared[key] = 0
                     except:
-                        pass
+                        print(f'Error while working on -> {file}')
                 i = 0
                 for value in df['Sem']:
                     try:
@@ -151,7 +151,7 @@ def roll_number_overall():
                         semwise_credits[value] += df['Credits'][i]
 
                     except:
-                        pass
+                        print(f'Error while working on -> {file}')
                     i += 1
                 for key in keys:
                     try:
@@ -161,7 +161,7 @@ def roll_number_overall():
                         else:
                             SPI[key] = 0
                     except:
-                        pass
+                        print(f'Error while working on -> {file}')
                 i = 0
                 for key in keys:
                     try:
@@ -186,7 +186,7 @@ def roll_number_overall():
                             x = total_credits[key]
                             total_credits_cleared[key] = y
                     except:
-                        pass
+                        print(f'Error while working on -> {file}')
                     i += 1
                 i = 0
                 for key in keys:
@@ -199,8 +199,6 @@ def roll_number_overall():
                             y = x/total_credits_cleared[key]
                         else:
                             y = 0
-                        if str(file) == '1121EE03_individual.csv':
-                            print(x, y)
                         CPI[key] = round(y, 2)
                         i += 1
                     except:

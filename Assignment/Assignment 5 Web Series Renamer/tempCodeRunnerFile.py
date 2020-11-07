@@ -1,9 +1,6 @@
-    try:
-            os.rename(file, new_name)
-        except:
-            print(f"Duplicate file found -> {file}\nDeleting File now")
-            os.remove(file)
-            print("\n-----------------\nFile Deleted\n")
-            count += 1
-            continue
-    return count
+folder_path = os.path.join(subtitle_path, 'Suits')
+# deleted_file = rename_Suits(folder_path)
+# folder_path = os.path.join(subtitle_path, 'Game of Thrones')
+# rename_Game_of_Thrones(folder_path)
+# folder_path = os.path.join(subtitle_path, 'Sherlock')
+# rename_Sherlock(folder_path)
