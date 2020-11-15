@@ -155,9 +155,9 @@ def roll_number_overall():
                     i += 1
                 for key in keys:
                     try:
-                        if semwise_credits_cleared[key] != 0:
+                        if semwise_credits[key] != 0:
                             SPI[key] = round(semwise_score[key] /
-                                             semwise_credits_cleared[key], 2)
+                                             semwise_credits[key], 2)
                         else:
                             SPI[key] = 0
                     except:
@@ -195,9 +195,9 @@ def roll_number_overall():
                         y = 0
                         for j in sem:
                             if int(j) <= int(key):
-                                x += SPI[j]*semwise_credits_cleared[j]
-                        if total_credits_cleared[key] != 0:
-                            y = x/total_credits_cleared[key]
+                                x += SPI[j]*semwise_credits[j]
+                        if total_credits[key] != 0:
+                            y = x/total_credits[key]
                         else:
                             y = 0
                         CPI[key] = round(y, 2)
