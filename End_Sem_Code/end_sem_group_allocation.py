@@ -12,6 +12,20 @@ def group_allocation(filename, number_of_groups):
     i = 0
     for data in df['Roll']:
         branch = re.split('\d+', str(data))[1]
+        filename = branch.upper() + '.csv'
+        row = {'Roll': df['Roll'][i], 'Name': df['Name']
+               [i], 'Email': df['Email'][i]}
+        if os.path.isfile(filename):
+            with open(filename, 'a+', newline='') as file:
+                writer = csv.DictWriter(
+                    file, fieldnames=['Roll', 'Name', 'Email'])
+                writer.writerow(row)
+        else:
+            with open(filename, 'a+', newline='') as file:
+                writer = csv.DictWriter(
+                    file, fieldnames=['Roll', 'Name', 'Email'])
+                writer.writeheader()
+                writer.writerow(row)
         if branch in branch_names:
             pass
         else:
