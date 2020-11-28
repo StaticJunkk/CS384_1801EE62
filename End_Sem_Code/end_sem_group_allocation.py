@@ -2,9 +2,13 @@ import pandas as pd
 import csv
 import re
 import os
+import shutil
 
 
 def group_allocation(filename, number_of_groups):
+    if os.path.isdir(os.path.join(os.getcwd(), 'groups')):
+        shutil.rmtree(os.path.join(os.getcwd(), 'groups'))
+    os.mkdir('groups')
     df = pd.read_csv(filename)
     total_students = len(df)
     branch_strength = {}
@@ -12,16 +16,18 @@ def group_allocation(filename, number_of_groups):
     i = 0
     for data in df['Roll']:
         branch = re.split('\d+', str(data))[1]
-        filename = branch.upper() + '.csv'
+        filename1 = branch.upper() + '.csv'
         row = {'Roll': df['Roll'][i], 'Name': df['Name']
                [i], 'Email': df['Email'][i]}
-        if os.path.isfile(filename):
-            with open(filename, 'a+', newline='') as file:
+        new_dir = os.path.join(os.getcwd(), 'groups')
+        new_file = os.path.join(new_dir, filename1)
+        if os.path.isfile(new_file):
+            with open(new_file, 'a+', newline='') as file:
                 writer = csv.DictWriter(
                     file, fieldnames=['Roll', 'Name', 'Email'])
                 writer.writerow(row)
         else:
-            with open(filename, 'a+', newline='') as file:
+            with open(new_file, 'a+', newline='') as file:
                 writer = csv.DictWriter(
                     file, fieldnames=['Roll', 'Name', 'Email'])
                 writer.writeheader()
@@ -38,21 +44,84 @@ def group_allocation(filename, number_of_groups):
     for i in range(len(row)):
         rows = {'BRANCH_CODE': row[i][0], 'STRENGTH': row[i][1]}
         print(rows)
-        if os.path.isfile('branch_strength.csv'):
-            with open('branch_strength.csv', 'a+', newline='') as file:
+        new_file1 = 'branch_strength.csv'
+        new_dir = os.path.join(os.getcwd(), 'groups')
+        new_file = os.path.join(new_dir, new_file1)
+        if os.path.isfile(new_file):
+            with open(new_file, 'a+', newline='') as file:
                 writer = csv.DictWriter(
                     file, fieldnames=['BRANCH_CODE', 'STRENGTH'])
                 writer.writerow(rows)
                 file.close()
         else:
-            with open('branch_strength.csv', 'a+', newline='') as file:
+            with open(new_file, 'a+', newline='') as file:
                 writer = csv.DictWriter(
                     file, fieldnames=['BRANCH_CODE', 'STRENGTH'])
                 writer.writeheader()
                 writer.writerow(rows)
                 file.close()
+    #number_of_groups = input("Kindly enter the number of groups needed for segregation - ")
+    for key, value in branch_strength.items():
+        #print(key, value)
+        group_strength = int(value/number_of_groups)
+        filename_branch1 = key+'.csv'
+        new_dir = os.path.join(os.getcwd(), 'groups')
+        filename_branch = os.path.join(new_dir, filename_branch1)
+        # print(filename)
+        with open(filename_branch) as file:
+            i = 1
+            j = 1
+            reader = csv.DictReader(file)
+            for row in reader:
+                if j < group_strength:
+                    if i < 10:
+                        new_file1 = 'Group_G0' + str(i) + '.csv'
+                    else:
+                        new_file1 = 'Group_G' + str(i) + '.csv'
+                    new_dir = os.path.join(os.getcwd(), 'groups')
+                    new_file = os.path.join(new_dir, new_file1)
+                    if os.path.isfile(new_file):
+                        with open(new_file, 'a+', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=[
+                                                    'Roll', 'Name', 'Email'])
+                            writer.writerow(row)
+                            file.close()
+                    else:
+                        with open(new_file, 'a+', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=[
+                                                    'Roll', 'Name', 'Email'])
+                            writer.writeheader()
+                            writer.writerow(row)
+                            file.close()
+                    j += 1
+                elif j == group_strength:
+
+                    if i < 10:
+                        new_file1 = 'Group_G0' + str(i) + '.csv'
+                    else:
+                        new_file1 = 'Group_G' + str(i) + '.csv'
+                    new_dir = os.path.join(os.getcwd(), 'groups')
+                    new_file = os.path.join(new_dir, new_file1)
+                    if os.path.isfile(new_file):
+                        with open(new_file, 'a+', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=[
+                                                    'Roll', 'Name', 'Email'])
+                            writer.writerow(row)
+                            file.close()
+                    else:
+                        with open(new_file, 'a+', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=[
+                                                    'Roll', 'Name', 'Email'])
+                            writer.writeheader()
+                            writer.writerow(row)
+                            file.close()
+                    j = 1
+                    i += 1
+                    if i > number_of_groups:
+                        i = 1
 
 
 filename = "Btech_2020_master_data.csv"
+
 number_of_groups = 12
 group_allocation(filename, number_of_groups)
