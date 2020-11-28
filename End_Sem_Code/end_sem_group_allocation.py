@@ -39,7 +39,7 @@ def group_allocation(filename, number_of_groups):
             branch_strength[branch] = 0
         branch_strength[branch] += 1
         i += 1
-    row = sorted(branch_strength.items(), key=lambda x: x[1])
+    row = sorted(branch_strength.items(), key=lambda x: x[1], reverse=True)
     print(row)
     for i in range(len(row)):
         rows = {'BRANCH_CODE': row[i][0], 'STRENGTH': row[i][1]}
@@ -60,10 +60,15 @@ def group_allocation(filename, number_of_groups):
                 writer.writeheader()
                 writer.writerow(rows)
                 file.close()
-    #number_of_groups = input("Kindly enter the number of groups needed for segregation - ")
+    # number_of_groups = input("Kindly enter the number of groups needed for segregation - ")
     for key, value in branch_strength.items():
-        #print(key, value)
-        group_strength = int(value/number_of_groups)
+        # print(key, value)
+        group_strength = []
+        for i in range(1, number_of_groups+1):
+            group_strength.append(int(value/number_of_groups))
+        for i in range(1, value % number_of_groups+1):
+            group_strength[i-1] += 1
+        print(group_strength)
         filename_branch1 = key+'.csv'
         new_dir = os.path.join(os.getcwd(), 'groups')
         filename_branch = os.path.join(new_dir, filename_branch1)
@@ -73,7 +78,7 @@ def group_allocation(filename, number_of_groups):
             j = 1
             reader = csv.DictReader(file)
             for row in reader:
-                if j < group_strength:
+                if j < group_strength[i-1]:
                     if i < 10:
                         new_file1 = 'Group_G0' + str(i) + '.csv'
                     else:
@@ -94,8 +99,7 @@ def group_allocation(filename, number_of_groups):
                             writer.writerow(row)
                             file.close()
                     j += 1
-                elif j == group_strength:
-
+                elif j == group_strength[i-1]:
                     if i < 10:
                         new_file1 = 'Group_G0' + str(i) + '.csv'
                     else:
@@ -117,8 +121,6 @@ def group_allocation(filename, number_of_groups):
                             file.close()
                     j = 1
                     i += 1
-                    if i > number_of_groups:
-                        i = 1
 
 
 filename = "Btech_2020_master_data.csv"
