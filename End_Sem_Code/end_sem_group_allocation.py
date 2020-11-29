@@ -14,6 +14,8 @@ def group_allocation(filename, number_of_groups):
     branch_strength = {}
     branch_names = []
     i = 0
+
+    # creating csv files for individual branches with student ingfo
     for data in df['Roll']:
         branch = re.split('\d+', str(data))[1]
         filename1 = branch.upper() + '.csv'
@@ -42,6 +44,8 @@ def group_allocation(filename, number_of_groups):
     row = sorted(branch_strength.items(), key=lambda x: x[1], reverse=True)
     # print(row)
     branch_strength = {}
+
+    # Creating branch_strength.csv file
     for i in range(len(row)):
         rows = {'BRANCH_CODE': row[i][0], 'STRENGTH': row[i][1]}
         branch_strength[row[i][0]] = row[i][1]
@@ -64,6 +68,8 @@ def group_allocation(filename, number_of_groups):
                 file.close()
     # number_of_groups = input("Kindly enter the number of groups needed for segregation - ")
     k = 0
+
+    # Creating group files for G01 to G12
     gb_strength = {}
     for key, value in branch_strength.items():
         # print(key, value)
@@ -133,6 +139,8 @@ def group_allocation(filename, number_of_groups):
                             file.close()
                     j = 1
                     i += 1
+
+    # Creating stats_grouping.csv file
     for i in range(0, number_of_groups):
         row = {}
         fieldnames = []
