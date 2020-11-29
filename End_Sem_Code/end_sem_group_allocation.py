@@ -9,7 +9,8 @@ def group_allocation(filename, number_of_groups):
     if os.path.isdir(os.path.join(os.getcwd(), 'groups')):
         shutil.rmtree(os.path.join(os.getcwd(), 'groups'))
     os.mkdir('groups')
-    df = pd.read_csv(filename)
+    df1 = pd.read_csv(filename)
+    df = df1.sort_values(by='Roll')
     total_students = len(df)
     branch_strength = {}
     branch_names = []
