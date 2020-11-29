@@ -146,11 +146,14 @@ def group_allocation(filename, number_of_groups):
         row = {}
         fieldnames = []
         row['Group_number'] = groups[i]
+        row['Total'] = 0
         fieldnames.append('Group_number')
+        fieldnames.append('Total')
         # print(gb_strength)
         for j in gb_strength.keys():
             # print(j)
             row[j] = gb_strength[j][i]
+            row['Total'] += row[j]
             fieldnames.append(j)
         # print(row)
         # return
