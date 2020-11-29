@@ -5,17 +5,65 @@ import os
 import shutil
 
 
-def group_allocation(filename, number_of_groups):
+def creating_groups_dir(filename):
     if os.path.isdir(os.path.join(os.getcwd(), 'groups')):
         shutil.rmtree(os.path.join(os.getcwd(), 'groups'))
     os.mkdir('groups')
+
+
+def branchwise_creator(new_file, rows):
+    if os.path.isfile(new_file):
+        with open(new_file, 'a+', newline='') as file:
+            writer = csv.DictWriter(
+                file, fieldnames=['BRANCH_CODE', 'STRENGTH'])
+            writer.writerow(rows)
+            file.close()
+    else:
+        with open(new_file, 'a+', newline='') as file:
+            writer = csv.DictWriter(
+                file, fieldnames=['BRANCH_CODE', 'STRENGTH'])
+            writer.writeheader()
+            writer.writerow(rows)
+            file.close()
+
+
+def groupwise_creator(new_file, row):
+    if os.path.isfile(new_file):
+        with open(new_file, 'a+', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=[
+                                    'Roll', 'Name', 'Email'])
+            writer.writerow(row)
+            file.close()
+    else:
+        with open(new_file, 'a+', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=[
+                                    'Roll', 'Name', 'Email'])
+            writer.writeheader()
+            writer.writerow(row)
+            file.close()
+
+
+def stats_file_creator(new_file, row, fieldnames):
+    if os.path.isfile(new_file):
+        with open(new_file, 'a+', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writerow(row)
+            file.close()
+    else:
+        with open(new_file, 'a+', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerow(row)
+            file.close()
+
+
+def group_allocation(filename, number_of_groups):
+    creating_groups_dir(filename)
     df1 = pd.read_csv(filename)
     df = df1.sort_values(by='Roll')
-    total_students = len(df)
     branch_strength = {}
     branch_names = []
     i = 0
-
     # creating csv files for individual branches with student ingfo
     for data in df['Roll']:
         branch = re.split('\d+', str(data))[1]
@@ -54,19 +102,7 @@ def group_allocation(filename, number_of_groups):
         new_file1 = 'branch_strength.csv'
         new_dir = os.path.join(os.getcwd(), 'groups')
         new_file = os.path.join(new_dir, new_file1)
-        if os.path.isfile(new_file):
-            with open(new_file, 'a+', newline='') as file:
-                writer = csv.DictWriter(
-                    file, fieldnames=['BRANCH_CODE', 'STRENGTH'])
-                writer.writerow(rows)
-                file.close()
-        else:
-            with open(new_file, 'a+', newline='') as file:
-                writer = csv.DictWriter(
-                    file, fieldnames=['BRANCH_CODE', 'STRENGTH'])
-                writer.writeheader()
-                writer.writerow(rows)
-                file.close()
+        branchwise_creator(new_file, rows)
     # number_of_groups = input("Kindly enter the number of groups needed for segregation - ")
     k = 0
 
@@ -102,19 +138,7 @@ def group_allocation(filename, number_of_groups):
                         groups.append(new_file1)
                     new_dir = os.path.join(os.getcwd(), 'groups')
                     new_file = os.path.join(new_dir, new_file1)
-                    if os.path.isfile(new_file):
-                        with open(new_file, 'a+', newline='') as file:
-                            writer = csv.DictWriter(file, fieldnames=[
-                                                    'Roll', 'Name', 'Email'])
-                            writer.writerow(row)
-                            file.close()
-                    else:
-                        with open(new_file, 'a+', newline='') as file:
-                            writer = csv.DictWriter(file, fieldnames=[
-                                                    'Roll', 'Name', 'Email'])
-                            writer.writeheader()
-                            writer.writerow(row)
-                            file.close()
+                    groupwise_creator(new_file, row)
                     j += 1
                 elif j == group_strength[i-1]:
                     if i < 10:
@@ -125,19 +149,7 @@ def group_allocation(filename, number_of_groups):
                         groups.append(new_file1)
                     new_dir = os.path.join(os.getcwd(), 'groups')
                     new_file = os.path.join(new_dir, new_file1)
-                    if os.path.isfile(new_file):
-                        with open(new_file, 'a+', newline='') as file:
-                            writer = csv.DictWriter(file, fieldnames=[
-                                                    'Roll', 'Name', 'Email'])
-                            writer.writerow(row)
-                            file.close()
-                    else:
-                        with open(new_file, 'a+', newline='') as file:
-                            writer = csv.DictWriter(file, fieldnames=[
-                                                    'Roll', 'Name', 'Email'])
-                            writer.writeheader()
-                            writer.writerow(row)
-                            file.close()
+                    groupwise_creator(new_file, row)
                     j = 1
                     i += 1
 
@@ -160,17 +172,7 @@ def group_allocation(filename, number_of_groups):
         new_file1 = 'stats_grouping.csv'
         new_dir = os.path.join(os.getcwd(), 'groups')
         new_file = os.path.join(new_dir, new_file1)
-        if os.path.isfile(new_file):
-            with open(new_file, 'a+', newline='') as file:
-                writer = csv.DictWriter(file, fieldnames=fieldnames)
-                writer.writerow(row)
-                file.close()
-        else:
-            with open(new_file, 'a+', newline='') as file:
-                writer = csv.DictWriter(file, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerow(row)
-                file.close()
+        stats_file_creator(new_file, row, fieldnames)
 
 
 filename = "Btech_2020_master_data.csv"
