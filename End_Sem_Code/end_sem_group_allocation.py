@@ -59,12 +59,9 @@ def stats_file_creator(new_file, row, fieldnames):
 
 def group_allocation(filename, number_of_groups):
     creating_groups_dir(filename)
-    data = pd.read_csv(filename)
-    data.set_index('Roll', inplace=True)
-    data.sort_values(["Roll"], axis=0, ascending=True, inplace=True)
-    file_name_sorted = "sorted_temp_master_data.csv"
-    data.to_csv(file_name_sorted)
-    df = pd.read_csv(file_name_sorted)
+    df1 = pd.read_csv(filename)
+    df = df1.sort_values(by='Roll')
+    df.reset_index(inplace=True)
     branch_strength = {}
     branch_names = []
     i = 0
@@ -177,7 +174,6 @@ def group_allocation(filename, number_of_groups):
         new_dir = os.path.join(os.getcwd(), 'groups')
         new_file = os.path.join(new_dir, new_file1)
         stats_file_creator(new_file, row, fieldnames)
-    os.remove(file_name_sorted)
 
 
 filename = "Btech_2020_master_data.csv"
