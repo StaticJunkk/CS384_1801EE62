@@ -226,6 +226,7 @@ def find_file(event=None):
     find_button.grid(row=0, column=8)
     exit_button = Button(top, text='Cancel', command=lambda: exit_file(top))
     exit_button.grid(row=1, column=8, columnspan=1)
+    top.protocol("WM_DELETE_WINDOW", lambda: exit_file(top))
 
 
 def replace_text(idr, lastidr, txt_replace, txt_find):
@@ -309,6 +310,7 @@ def find_replace_file(event=None):
 
     exit_button = Button(top, text='Cancel', command=lambda: exit_file(top))
     exit_button.grid(row=3, column=8, columnspan=1)
+    top.protocol("WM_DELETE_WINDOW", lambda: exit_file(top))
 
 
 def font_changer(top_font, font_name, font_size):

@@ -132,9 +132,9 @@ time_destroyer = 0
 
 def time_destroy():
     global time_destroyer
-    print(time_destroyer)
+    # print(time_destroyer)
     time_destroyer = 1
-    print(time_destroyer)
+    # print(time_destroyer)
 
 
 def time_display(alloted_time):
@@ -180,9 +180,9 @@ def submit_confirm(button_list):
     l.place(relx=0.5, rely=0.3, anchor=CENTER)
     y = Button(con, text='YES', command=lambda: [
         final_display(), kill_ques(), con.destroy()])
-    y.place(relx=0.3, rely=0.5, anchor=CENTER)
+    y.place(relx=0.3, rely=0.5, width=75, anchor=CENTER)
     n = Button(con, text='NO', command=lambda: con.destroy())
-    n.place(relx=0.6, rely=0.5, anchor=CENTER)
+    n.place(relx=0.6, rely=0.5, width=75, anchor=CENTER)
 
 
 def kill_ques():
@@ -196,11 +196,12 @@ question_submitter = 0
 
 
 def question_display(alloted_time, n, ch):
+    global answers
     global question_submitter
     if question_submitter == 0:
         if n < 10 and n > -1:
-            print(n)
-            print(alloted_time)
+            # print(n)
+            # print(alloted_time)
             if n == 0 and ch == 0:
                 alloted_time = 60*int(alloted_time)
                 global time_label
@@ -216,22 +217,34 @@ def question_display(alloted_time, n, ch):
             k = 0.4
             button_list = []
             option = ['1', '2', '3', '4']
-            for i in range(4):
-                x = 'option'+str(i+1)
-                radio_ques = Radiobutton(
-                    root, text=df[x][int(df['ques_no'][n])-1], variable=response, value=i+1, indicatoron=0, width=50)
-                radio_ques.place(relx=0.1, rely=k, anchor=W)
-                button_list.append(radio_ques)
-                k += 0.05
+            for i in range(5):
+                if i < 4:
+                    x = 'option'+str(i+1)
+                    radio_ques = Radiobutton(
+                        root, text=df[x][int(df['ques_no'][n])-1], variable=response, value=i+1, indicatoron=0, width=50)
+                    radio_ques.place(relx=0.1, rely=k, anchor=W)
+                    # print(answers[int(df['ques_no'][n])-1], i+1)
+                    h = i+1
+                    if h == int(answers[int(df['ques_no'][n])-1]):
+                        # print(answers[int(df['ques_no'][n])-1])
+                        radio_ques.select()
+                    button_list.append(radio_ques)
+                    k += 0.05
+                else:
+                    radio_ques = Radiobutton(
+                        root, text='CLEAR SELECTION', variable=response, value=0, indicatoron=0, width=50)
+                    radio_ques.place(relx=0.1, rely=k, anchor=W)
+                    button_list.append(radio_ques)
+
             next_button = Button(root, text='Next Question', command=lambda: [save_responses(response.get(), n), question_label.destroy(), next_button.destroy(), prev_button.destroy(), submit_button.destroy(), destroy_button(button_list),
                                                                               question_display(alloted_time, n+1, 1)])
-            next_button.place(relx=0.6, rely=0.8, anchor=CENTER)
+            next_button.place(relx=0.6, rely=0.8, anchor=W)
             prev_button = Button(root, text='Previous Question', command=lambda: [save_responses(response.get(), n), question_label.destroy(), next_button.destroy(), prev_button.destroy(), submit_button.destroy(), destroy_button(button_list),
                                                                                   question_display(alloted_time, n-1, 1)])
-            prev_button.place(relx=0.2, rely=0.8, anchor=CENTER)
+            prev_button.place(relx=0.2, rely=0.8, anchor=W)
             submit_button = Button(root, text='Submit Quiz',
                                    command=lambda: submit_confirm(button_list))
-            submit_button.place(relx=0.4, rely=0.9, anchor=CENTER, width=75)
+            submit_button.place(relx=0.43, rely=0.9, anchor=W, width=75)
         elif n >= 10:
             n = 0
             ch = 1
@@ -262,7 +275,7 @@ def commence_quiz(quiz_path, button_list):
     paper_path = os.path.join(quiz_path_1, quiz_path)
     global df, alloted_time
     df = pd.read_csv(paper_path)
-    print(df['time'][0])
+    # print(df['time'][0])
     # global confirm_button
     # confirm_button.destroy
     alloted_time = df['time'][0]
