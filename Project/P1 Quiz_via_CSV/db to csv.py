@@ -6,7 +6,7 @@ import pandas as pd
 con = sqlite3.connect('project1_quiz_cs384.db')
 
 # read data from SQL to pandas dataframe.
-data = pd.read_sql_query('Select * from project1_marks;', con)
+data = pd.read_sql_query('Select * from project1_registration;', con)
 
 print(data)
 

@@ -1,1 +1,2 @@
-print
+print(type(record), record[])
+    # return

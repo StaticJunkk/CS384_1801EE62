@@ -6,6 +6,7 @@ import csv
 import sqlite3
 import pandas as pd
 import csv
+import getpass as gp
 
 sys.setrecursionlimit(15000)
 
@@ -323,23 +324,26 @@ def quiz_select(record):
 
 
 def login_verify(top_log, username, password):
+
     global rollnum
     rollnum = username
     conn = sqlite3.connect('project1_quiz_cs384.db')
     c = conn.cursor()
-    c.execute('SELECT * FROM project1_registration WHERE roll = ? AND password = ?',
-              [username, password])
+    c.execute('SELECT * FROM project1_registration WHERE roll = ?',
+              [username])
     record = c.fetchall()
-    print(record)
-    if len(record):
-        top_verify = Toplevel()
-        top_verify.title('Verified')
-        top_verify.geometry('250x250')
-        verify_label = Label(top_verify, text='Login Successful!').place(
-            relx=0.5, rely=0.5, anchor=CENTER)
-        continue_button = Button(top_verify, text='CONTINUE', command=lambda: [top_log.destroy(),
-                                                                               top_verify.destroy(), quiz_select(record)]).place(relx=0.5, rely=0.7, width=75, anchor=CENTER)
-
+    # print(type(record), record[])
+    # return
+    for rec in record:
+        if bcrypt.checkpw(password.encode('utf-8'), rec[3]):
+            top_verify = Toplevel()
+            top_verify.title('Verified')
+            top_verify.geometry('250x250')
+            verify_label = Label(top_verify, text='Login Successful!').place(
+                relx=0.5, rely=0.5, anchor=CENTER)
+            continue_button = Button(top_verify, text='CONTINUE', command=lambda: [top_log.destroy(),
+                                                                                   top_verify.destroy(), quiz_select(record)]).place(relx=0.5, rely=0.7, width=75, anchor=CENTER)
+            break
     else:
         top_verify = Toplevel()
         top_verify.title('Error')
@@ -357,12 +361,16 @@ global rollnum
 
 
 def register_new(top_reg, username, roll, phone, password):
+    hashable_pw = bytes(password, encoding='utf-8')
+    hashed_pw = bcrypt.hashpw(hashable_pw, bcrypt.gensalt())
+    print(hashable_pw)
+    print(hashed_pw)
     global rollnum
     rollnum = roll
     conn = sqlite3.connect('project1_quiz_cs384.db')
     c = conn.cursor()
     c.execute('SELECT * FROM project1_registration WHERE roll = ? AND password = ?',
-              [roll, password])
+              [roll, hashed_pw])
     record = c.fetchall()
     if len(record):
         top_verify = Toplevel()
@@ -381,7 +389,7 @@ def register_new(top_reg, username, roll, phone, password):
                       'name': username,
                       'roll': roll,
                       'phone': phone,
-                      'password': password
+                      'password': hashed_pw
                   })
         conn.commit()
         conn.close()
