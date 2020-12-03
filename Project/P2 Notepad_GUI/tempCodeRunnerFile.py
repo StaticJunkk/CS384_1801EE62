@@ -1,0 +1,1 @@
+font_ch = tkinter.font(family=font_name, size=font_size)
