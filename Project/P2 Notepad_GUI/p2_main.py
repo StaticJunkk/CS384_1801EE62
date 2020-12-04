@@ -1,8 +1,8 @@
-
 import tkinter
 from tkinter import *
 from tkinter import font
 from tkinter import filedialog
+from tkinter import messagebox
 import os
 import datetime
 from datetime import *
@@ -10,94 +10,29 @@ from datetime import *
 
 file_name = None
 
+global saved_font_name, saved_font_number, statusbar
+
 root = Tk()
 root.title("Untitled file")
-root.geometry('400x400')
+root.geometry('400x420')
+
+saved_font_name = 'Courier'
+saved_font_number = '10'
 
 
 textarea = Text(root)
 menubar = Menu(root)
+scrollbar = Scrollbar(root)
 filemenu = Menu(menubar, tearoff=0)
-aboutmenu = Menu(menubar, tearoff=0)
-formatmenu = Menu(menubar, tearoff=0)
 editmenu = Menu(menubar, tearoff=0)
 statsmenu = Menu(menubar, tearoff=0)
-thememunu = Menu(menubar, tearoff=0)
-scrollbar = Scrollbar(textarea)
+formatmenu = Menu(menubar, tearoff=0)
+thememenu = Menu(menubar, tearoff=0)
+aboutmenu = Menu(menubar, tearoff=0)
 
+textarea.configure(font=('Courier', 10))
 
-color_dict = {
-    'Light Default': ('#000000', '#ffffff'),
-    'Light Plus': ('#474747', '#e0e0e0'),
-    'Dark': ('#c4c4c4', '#2d2d2d'),
-    'Red': ('#2d2d2d', '#ffe8e8'),
-    'Monokai': ('#d3b774', '#474747'),
-    'Night Blue': ('#ededed', '#6b9dc2')
-}
-
-
-def change_theme(choose_theme):
-    fg_color, bg_color = choose_theme[0], choose_theme[1]
-    textarea.config(background=bg_color, fg=fg_color)
-
-
-def word_count():
-    text = textarea.get('1.0', END)
-    words = text.split()
-    top = Toplevel(root)
-    top.geometry('200x50')
-    top.title('Word Count')
-    counting = Label(top, text=f'Total Word count : {len(words)}')
-    counting.pack()
-    exit_button = Button(top, text='Close', command=lambda: top.destroy())
-    exit_button.pack()
-
-
-def char_count():
-    text = textarea.get('1.0', END)
-    top = Toplevel(root)
-    top.geometry('200x50')
-    top.title('Character Count')
-    counting = Label(top, text=f'Total Character count : {len(text)}')
-    counting.pack()
-    exit_button = Button(top, text='Close', command=lambda: top.destroy())
-    exit_button.pack()
-
-
-def date_modified():
-    if file_name:
-        if os.path.isfile(file_name):
-            last_modified_date = datetime.fromtimestamp(
-                os.path.getmtime(file_name))
-        else:
-            last_modified_date = 0
-    else:
-        return
-    top = Toplevel(root)
-    top.geometry('300x50')
-    top.title('Last date modified')
-    counting = Label(top, text=f'last date modified : {last_modified_date}')
-    counting.pack()
-    exit_button = Button(top, text='Close', command=lambda: top.destroy())
-    exit_button.pack()
-
-
-def date_created():
-    if file_name:
-        if os.path.isfile(file_name):
-            last_modified_date = datetime.fromtimestamp(
-                os.path.getctime(file_name))
-        else:
-            last_modified_date = 0
-    else:
-        return
-    top = Toplevel(root)
-    top.geometry('300x50')
-    top.title('Date created')
-    counting = Label(top, text=f'date created : {last_modified_date}')
-    counting.pack()
-    exit_button = Button(top, text='Close', command=lambda: top.destroy())
-    exit_button.pack()
+# FILE_MENU
 
 
 def new_file(event=None):
@@ -106,6 +41,7 @@ def new_file(event=None):
     file_name = None
     textarea.delete('1.0', END)
     textarea.update()
+    textarea.configure(font=('Courier', 10))
 
 
 def open_file(event=None):
@@ -150,25 +86,26 @@ def save_file(event=None):
         file.close()
 
 
-def saveas_file():
+def saveas_file(event=None):
     global file_name
-    file_name = filedialog.asksaveasfilename(initialfile='Untitled.txt', defaultextension=".txt", filetypes=[
+    file_name1 = filedialog.asksaveasfilename(initialfile='Untitled.txt', defaultextension=".txt", filetypes=[
         ("All Files", "*.*"), ("Text Documents", "*.txt")])
 
-    if file_name == "":
-        file_name = None
-    else:
+    if file_name1 != "":
         # Try to save the file
         file = open(file_name, "w")
         file.write(textarea.get(1.0, END))
         file.close()
 
         # Change the window title
+        file_name = file_name1
         root.title(os.path.basename(file_name))
 
 
 def end_program(event=None):
     root.destroy()
+
+# EDIT_MENU
 
 
 def copy_file():
@@ -204,6 +141,7 @@ def highlight_text(txt):
                 idx = '1.0'
                 search = 0
                 return
+
         lastidx = '%s+%dc' % (idx, len(txt))
         textarea.tag_add('found', idx, lastidx)
         idr = idx
@@ -214,8 +152,15 @@ def highlight_text(txt):
 
 
 def find_file(event=None):
+    global idx, idr, lastidr, search
+
+    idx = '1.0'
+    idr = '1.0'
+    lastidr = END
+    search = 1
+
     top = Toplevel(root)
-    top.geometry('400x200')
+    top.geometry('350x100')
     top.title("Find")
     find_label = Label(top, text='Find what')
     find_label.grid(row=0, column=0)
@@ -233,7 +178,9 @@ def replace_text(idr, lastidr, txt_replace, txt_find):
     global search
     if search == 0:
         return
-    textarea.tag_remove('replace', '1.0', END)
+
+    textarea.tag_remove('found', '1.0', END)
+
     if (txt_find and txt_replace):
         textarea.delete(idr, lastidr)
         textarea.update()
@@ -272,12 +219,10 @@ def replaceall_text(txt_replace, txt_find):
         textarea.tag_config('found', foreground='white', background='blue')
 
 
-def exit_file(top):
-    textarea.tag_remove('found', '1.0', END)
-    top.destroy()
-
-
 def find_replace_file(event=None):
+    global search
+    search = 1
+
     top = Toplevel(root)
     top.geometry('400x200')
     top.title("Find")
@@ -313,34 +258,136 @@ def find_replace_file(event=None):
     top.protocol("WM_DELETE_WINDOW", lambda: exit_file(top))
 
 
+def exit_file(top):
+    textarea.tag_remove('found', '1.0', END)
+    top.destroy()
+
+
+# Stat_Menu
+
+
+def word_count():
+    text = textarea.get('1.0', END)
+    words = text.split()
+    top = Toplevel(root)
+    top.geometry('200x50')
+    top.title('Word Count')
+    counting = Label(top, text=f'Total Word count : {len(words)}')
+    counting.pack()
+    exit_button = Button(top, text='Close', command=lambda: top.destroy())
+    exit_button.pack()
+
+
+def char_count():
+    text = textarea.get('1.0', END)
+    top = Toplevel(root)
+    top.geometry('200x50')
+    top.title('Character Count')
+    counting = Label(top, text=f'Total Character count : {len(text)-1}')
+    counting.pack()
+    exit_button = Button(top, text='Close', command=lambda: top.destroy())
+    exit_button.pack()
+
+
+def date_created():
+    if file_name:
+        if os.path.isfile(file_name):
+            last_modified_date = datetime.fromtimestamp(
+                os.path.getctime(file_name))
+        else:
+            last_modified_date = 0
+    else:
+        return
+    top = Toplevel(root)
+    top.geometry('300x50')
+    top.title('Date created')
+    counting = Label(
+        top, text=f'date created : {str(last_modified_date)[:-7]}')
+    counting.pack()
+    exit_button = Button(top, text='Close', command=lambda: top.destroy())
+    exit_button.pack()
+
+
+def date_modified():
+    if file_name:
+        if os.path.isfile(file_name):
+            last_modified_date = datetime.fromtimestamp(
+                os.path.getmtime(file_name))
+        else:
+            last_modified_date = 0
+    else:
+        return
+    top = Toplevel(root)
+    top.geometry('300x50')
+    top.title('Last date modified')
+    counting = Label(
+        top, text=f'last date modified : {str(last_modified_date)[:-7]}')
+    counting.pack()
+    exit_button = Button(top, text='Close', command=lambda: top.destroy())
+    exit_button.pack()
+
+# FORMAT_MENU
+
+
 def font_changer(top_font, font_name, font_size):
-    if font_name and font_size:
-        # font_ch = tkinter.font(family=font_name, size=font_size)
-        textarea.configure(font=(font_name, font_size))
+    global saved_font_number, saved_font_name
+    textarea.configure(font=(font_name, font_size))
+    saved_font_name = font_name
+    saved_font_number = font_size
     top_font.destroy()
 
 
 def font_editor():
     font_names = list(tkinter.font.families())
+    global top
     top = Toplevel(root)
     top.geometry('380x200')
     top.title("Font")
 
+    def font_checker():
+        global saved_font_number, saved_font_name, font_name_list, font_no_list, top
+        # print(saved_font_number, saved_font_name)
+        if not font_name_list.curselection():
+            if saved_font_name:
+                fontname = saved_font_name
+            else:
+                fontname = None
+        else:
+            fontname = font_name_list.get(
+                font_name_list.curselection())
+        if not font_no_list.curselection():
+            if saved_font_number:
+                fontsize = saved_font_number
+            else:
+                fontsize = None
+        else:
+            fontsize = font_no_list.get(font_no_list.curselection())
+        font_changer(top, fontname, fontsize)
+
     def font_name_change(event):
+        global saved_font_name
         font_display = Label(top, text=font_name_list.get(
             font_name_list.curselection())).place(x=20, y=0, width=100)
+        saved_font_name = font_name_list.get(
+            font_name_list.curselection())
+        test_label.config(font=(saved_font_name, saved_font_number))
 
     def font_no_change(event):
+        global saved_font_number
         font_display_no = Label(top, text=font_no_list.get(
             font_no_list.curselection())).place(x=140, y=0, width=100)
+        saved_font_number = font_no_list.get(
+            font_no_list.curselection())
+        test_label.config(font=(saved_font_name, saved_font_number))
 
-    font_name = StringVar()
-    font_name.set('Font Name')
+    global font_name_list, font_no_list
     font_display = Label(top, text="Font type").place(x=20, y=0, width=100)
     font_name_list = Listbox(top, exportselection=0)
     font_name_list.place(x=20, y=20, width=100, height=150)
+
     for font in font_names:
         font_name_list.insert(END, font)
+
     scrollbar_font_name = Scrollbar(font_name_list)
     scrollbar_font_name.pack(side=RIGHT, fill=Y)
     font_name_list.config(yscrollcommand=scrollbar_font_name.set)
@@ -348,13 +395,13 @@ def font_editor():
     font_name_list.bind('<<ListboxSelect>>',
                         font_name_change)
 
-    font_no = StringVar()
-    font_no.set('Font size')
     font_display_no = Label(top, text='Font Size').place(x=140, y=0, width=100)
     font_no_list = Listbox(top, exportselection=0)
     font_no_list.place(x=140, y=20, width=100, height=150)
+
     for size in range(2, 30):
         font_no_list.insert(END, 2*size)
+
     scrollbar_font_no = Scrollbar(font_no_list)
     scrollbar_font_no.pack(side=RIGHT, fill=Y)
     font_no_list.bind('<<ListboxSelect>>',
@@ -362,31 +409,61 @@ def font_editor():
     font_no_list.config(yscrollcommand=scrollbar_font_no.set)
     scrollbar_font_no.config(command=font_no_list.yview)
 
-    ok_button = Button(top, text='OK', command=lambda: font_changer(top,
-                                                                    font_name_list.get(
-                                                                        font_name_list.curselection()), font_no_list.get(
-                                                                        font_no_list.curselection()))).place(x=280, y=50, width=75)
+    ok_button = Button(top, text='OK', command=lambda: font_checker()).place(
+        x=280, y=50, width=75)
     exit_button = Button(top, text='Cancel', command=lambda: top.destroy()).place(
         x=280, y=75, width=75)
+    test_label = Label(top, text='SAMPLE')
+    test_label.place(x=315, y=128, anchor=CENTER)
+
+
+# THEME_MENU
+
+
+def change_theme(choose_theme):
+    fg_color, bg_color = choose_theme[0], choose_theme[1]
+    textarea.config(background=bg_color, fg=fg_color)
+
+# ABOUT_MENU
+
+
+def pop():
+    messagebox.showinfo(
+        "About", "Created by Yuvi and Ashwin for Python_CS384 !!! ")
+
+
+# WORD_CHARACTER_UPDATOR
+
+
+def statusbar_updator(event):
+    global statusbar
+    statusbar.destroy()
+    statusbar = Label(
+        root, text=f"Words : {len(textarea.get(1.0, END).split())}      |    Characters : {int(len(textarea.get(1.0, END))-1)}", bd=1, relief=SUNKEN, anchor=W)
+    statusbar.pack(side=BOTTOM, fill=X)
 
 
 root.grid_rowconfigure(0, weight=1)
 root.grid_columnconfigure(0, weight=1)
-textarea.grid(sticky=N + E + S + W)
+scrollbar.pack(side=RIGHT, fill=Y)
+textarea.pack(fill=BOTH, expand=True)
 
 filemenu.add_command(label='New', command=new_file, accelerator='Ctrl+N')
 filemenu.add_command(label='Open', command=open_file, accelerator='Ctrl+O')
 filemenu.add_command(label='Save', command=save_file, accelerator='Ctrl+S')
-filemenu.add_command(label='Save as', command=saveas_file)
+filemenu.add_command(label='Save as', command=saveas_file,
+                     accelerator='Ctrl+Shift+S')
 filemenu.add_command(label='Exit', command=end_program, accelerator='Ctrl+Q')
 menubar.add_cascade(label='File', menu=filemenu)
 root.bind('<Control-n>', new_file)
 root.bind('<Control-o>', open_file)
 root.bind('<Control-s>', save_file)
+root.bind('<Control-Shift-KeyPress-s>', saveas_file)
 root.bind('<Control-q>', end_program)
 root.bind('<Control-N>', new_file)
 root.bind('<Control-O>', open_file)
 root.bind('<Control-S>', save_file)
+root.bind('<Control-Shift-KeyPress-S>', saveas_file)
 root.bind('<Control-Q>', end_program)
 
 
@@ -412,46 +489,41 @@ menubar.add_cascade(label='Stats', menu=statsmenu)
 formatmenu.add_command(label='Font...', command=font_editor)
 menubar.add_cascade(label='Format', menu=formatmenu)
 
+color_dict = {
+    'Light Default': ('#000000', '#ffffff'),
+    'Light Plus': ('#474747', '#e0e0e0'),
+    'Dark': ('#c4c4c4', '#2d2d2d'),
+    'Red': ('#2d2d2d', '#ffe8e8'),
+    'Monokai': ('#d3b774', '#474747'),
+    'Night Blue': ('#ededed', '#6b9dc2')
+}
 
-thememunu.add_command(label='Light Default',
+thememenu.add_command(label='Light Default',
                       command=lambda: change_theme(color_dict['Light Default']))
-thememunu.add_command(label='Light Plus',
+thememenu.add_command(label='Light Plus',
                       command=lambda: change_theme(color_dict['Light Plus']))
-thememunu.add_command(
+thememenu.add_command(
     label='Dark', command=lambda: change_theme(color_dict['Dark']))
-thememunu.add_command(
+thememenu.add_command(
     label='Red', command=lambda: change_theme(color_dict['Red']))
-thememunu.add_command(
+thememenu.add_command(
     label='Monokai', command=lambda: change_theme(color_dict['Monokai']))
-thememunu.add_command(label='Night Blue',
+thememenu.add_command(label='Night Blue',
                       command=lambda: change_theme(color_dict['Night Blue']))
-menubar.add_cascade(label='Theme', menu=thememunu)
+menubar.add_cascade(label='Theme', menu=thememenu)
 
-
+aboutmenu.add_command(label='Info', command=pop)
+menubar.add_cascade(label='About', menu=aboutmenu)
 root.config(menu=menubar)
 
-scrollbar.pack(side=RIGHT, fill=Y)
+
 menubar.add_separator()
 scrollbar.config(command=textarea.yview)
 textarea.config(yscrollcommand=scrollbar.set)
 
-
-def statusbar_updator(event):
-    global statusbar
-    statusbar.destroy()
-    statusbar = Label(
-        root, text=f"Words : {len(textarea.get(1.0, END).split())}      |    Characters : {int(len(textarea.get(1.0, END))-1)}", bd=1, relief=SUNKEN, anchor=W)
-    statusbar.place(relx=0.0,
-                    rely=1.0,
-                    anchor='sw')
-
-
-global statusbar
 statusbar = Label(
     root, text=f"Words : {len(textarea.get(1.0, END).split())}      |    Characters : {int(len(textarea.get(1.0, END)))-1}", bd=1, relief=SUNKEN, anchor=W)
-statusbar.place(relx=0.0,
-                rely=1.0,
-                anchor='sw')
+statusbar.pack(side=BOTTOM, fill=X)
 root.bind('<Key>', statusbar_updator)
 
 
