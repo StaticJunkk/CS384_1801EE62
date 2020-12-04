@@ -209,16 +209,24 @@ def question_display(alloted_time, n, ch):
                 alloted_time = 60*int(alloted_time)
                 global time_label
                 time_label = Label(root)
-                time_label.place(relx=0.8, rely=0.2, anchor=CENTER)
+                time_label.place(relx=0.8, rely=0.1, anchor=CENTER)
                 time_display(alloted_time)
             global question_label, next_button, prev_button, submit_button, button_list
+            unanswered = 0
+            for i in answers:
+                if i == 0 or i == '0':
+                    unanswered += 1
             # for i in range(len(df)):
             question_label = Label(root)
-            question_label.place(relx=0.1, rely=0.3, anchor=W)
-            question_label['text'] = f"{df['ques_no'][n]}. {df['question'][int(df['ques_no'][n])-1]} [Compulsory : {df['compulsory'][n]}]"
+            marks_label = Label(
+                root, text=f"Compulsory : {df['compulsory'][n]}\nMarks: ({df['marks_correct_ans'][n]}/{df['marks_wrong_ans'][n]})\nUnanswered questions - {unanswered}").place(relx=0.4, rely=0.28, anchor=E)
+
+            question_label.place(relx=0.1, rely=0.2, anchor=W)
+            question_label['text'] = f"{df['ques_no'][n]}. {df['question'][int(df['ques_no'][n])-1]}"
             response = StringVar()
             k = 0.4
             button_list = []
+
             option = ['1', '2', '3', '4']
             for i in range(5):
                 if i < 4:
