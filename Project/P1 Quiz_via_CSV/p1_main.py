@@ -81,7 +81,9 @@ def file_transfer(answers):
     file_path = os.path.join(path_dir, file_name)
     if os.path.isfile(file_path):
         os.remove(file_path)
-    df.to_csv(file_path)
+    headerlist = ['ques_no', 'question', 'option1', 'option2', 'option3', 'option4', 'correct_option', 'marks_correct_ans', 'marks_wrong_ans', 'compulsory', 'marked_choice', 'Total', 'Legend'
+                  ]
+    df.to_csv(file_path, header=headerlist, index=False)
     row = {'Roll': rollnum, 'Total_marks': final_score}
     file_name = 'scores_q'+str(quiz_num) + '.csv'
     path_dir = os.path.join(os.getcwd(), 'quiz_wise_responses')
@@ -107,7 +109,7 @@ def file_transfer(answers):
 def final_display():
     global answers
     final = Label(
-        root, text='Congratulations! You have completed the quiz. Please press Continue')
+        root, text='Congratulations! You have completed the quiz. Please press Continue to save the results')
     final.place(relx=0.5, rely=0.5, anchor=CENTER)
     continue_button = Button(root, text='CONTINUE!', command=lambda: [
         final.destroy(), continue_button.destroy(), file_transfer(answers)])
@@ -237,10 +239,10 @@ def question_display(alloted_time, n, ch):
                     radio_ques.place(relx=0.1, rely=k, anchor=W)
                     button_list.append(radio_ques)
 
-            next_button = Button(root, text='Next Question', command=lambda: [save_responses(response.get(), n), question_label.destroy(), next_button.destroy(), prev_button.destroy(), submit_button.destroy(), destroy_button(button_list),
+            next_button = Button(root, text='Save and Next', command=lambda: [save_responses(response.get(), n), question_label.destroy(), next_button.destroy(), prev_button.destroy(), submit_button.destroy(), destroy_button(button_list),
                                                                               question_display(alloted_time, n+1, 1)])
             next_button.place(relx=0.6, rely=0.8, anchor=W)
-            prev_button = Button(root, text='Previous Question', command=lambda: [save_responses(response.get(), n), question_label.destroy(), next_button.destroy(), prev_button.destroy(), submit_button.destroy(), destroy_button(button_list),
+            prev_button = Button(root, text='Save and Previous', command=lambda: [save_responses(response.get(), n), question_label.destroy(), next_button.destroy(), prev_button.destroy(), submit_button.destroy(), destroy_button(button_list),
                                                                                   question_display(alloted_time, n-1, 1)])
             prev_button.place(relx=0.2, rely=0.8, anchor=W)
             submit_button = Button(root, text='Submit Quiz',
@@ -421,7 +423,7 @@ def login_user():
         relx=0.4, rely=0.3, anchor=W)
     password_label = Label(top_login, text="Password").place(
         relx=0.2, rely=0.4, anchor=W)
-    password_entry = Entry(top_login, text='Password')
+    password_entry = Entry(top_login, show='*')
     password_entry.place(
         relx=0.4, rely=0.4, anchor=W)
     login_button = Button(top_login, text='LOGIN', command=lambda: login_verify(top_login,
@@ -434,12 +436,12 @@ def register_user():
     top_reg = Toplevel()
     top_reg.title('Login')
     top_reg.geometry('400x400')
-    user_name_label = Label(top_reg, text="User name").place(
+    user_name_label = Label(top_reg, text="Name").place(
         relx=0.15, rely=0.3, anchor=W)
     user_name_entry = Entry(top_reg)
     user_name_entry.place(
         relx=0.4, rely=0.3, anchor=W)
-    roll_label = Label(top_reg, text="Roll Number").place(
+    roll_label = Label(top_reg, text="Roll no(username)").place(
         relx=0.15, rely=0.4, anchor=W)
     roll_entry = Entry(top_reg)
     roll_entry.place(
