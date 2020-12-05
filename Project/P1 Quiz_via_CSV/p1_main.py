@@ -141,7 +141,7 @@ def time_destroy():
 
 
 def time_display(alloted_time):
-    global question_label, next_button, prev_button, submit_button, time_label, time_destroyer
+    global question_label, next_button, prev_button, submit_button, time_label, time_destroyer, marks_label
     # if alloted_time == -20:
     #     time_label.destroy()
     #     return
@@ -172,11 +172,12 @@ def time_display(alloted_time):
         time_label.destroy()
         question_label.destroy()
         submit_button.destroy()
+        marks_label.destroy()
         final_display()
 
 
 def submit_confirm(button_list):
-    global question_label, next_button, prev_button, submit_button, time_label
+    global question_label, next_button, prev_button, submit_button, time_label, marks_confirm
     con = Toplevel()
     con.geometry('300x300')
     l = Label(con, text='Are you sure you want to submit?')
@@ -211,7 +212,7 @@ def question_display(alloted_time, n, ch):
                 time_label = Label(root)
                 time_label.place(relx=0.8, rely=0.1, anchor=CENTER)
                 time_display(alloted_time)
-            global question_label, next_button, prev_button, submit_button, button_list
+            global question_label, next_button, prev_button, submit_button, button_list, marks_label
             unanswered = 0
             for i in answers:
                 if i == 0 or i == '0':
@@ -219,7 +220,8 @@ def question_display(alloted_time, n, ch):
             # for i in range(len(df)):
             question_label = Label(root)
             marks_label = Label(
-                root, text=f"Compulsory : {df['compulsory'][n]}\nMarks: ({df['marks_correct_ans'][n]}/{df['marks_wrong_ans'][n]})\nUnanswered questions - {unanswered}").place(relx=0.4, rely=0.28, anchor=E)
+                root, text=f"Compulsory : {df['compulsory'][n]}\nMarks: ({df['marks_correct_ans'][n]}/{df['marks_wrong_ans'][n]})\nUnanswered questions - {unanswered}")
+            marks_label.place(relx=0.4, rely=0.28, anchor=E)
 
             question_label.place(relx=0.1, rely=0.2, anchor=W)
             question_label['text'] = f"{df['ques_no'][n]}. {df['question'][int(df['ques_no'][n])-1]}"
@@ -269,6 +271,7 @@ def question_display(alloted_time, n, ch):
         prev_button.destroy()
         submit_button.destroy()
         question_label.destroy()
+        marks_label.destroy()
         destroy_button(button_list)
         time_destroy()
         return
@@ -313,7 +316,7 @@ def quiz_select(record):
     quiz_path = os.path.join(os.getcwd(), 'quiz_wise_questions')
     i = 1
     lst = {}
-    response = StringVar()
+    response = StringVar(value='1')
     for file in os.listdir(quiz_path):
         q = 'quiz_'+str(i)
         lst[q] = file
@@ -324,6 +327,7 @@ def quiz_select(record):
     for name, path in lst.items():
         radio_res = Radiobutton(
             root, text=name, variable=response, value=path)
+        radio_res
         radio_res.place(relx=0.5, rely=i, anchor=CENTER)
         i += 0.05
         button_list.append(radio_res)
